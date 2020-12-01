@@ -1,4 +1,5 @@
 package src.game;
+import src.game.card.*;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -22,7 +23,8 @@ public class Game extends Canvas implements Runnable {
     public Game() {
         mainMenu = new MainMenu();
         table = new Table();
-	this.addKeyListener(new KeyInput());   //travel è stato qui
+      	this.addKeyListener(new KeyInput());   //travel è stato qui
+        new Deck();
         this.addMouseListener(new Mouse(table));
         new Window(WIDTH, HEIGHT, TITLE, this);
     }

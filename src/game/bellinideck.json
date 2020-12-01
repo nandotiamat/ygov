@@ -1,0 +1,46 @@
+[
+    {
+        "serial" : "1",
+        "quantity" : 2
+    },
+    {   
+        "serial" : "2",
+        "quantity" : 2
+    },
+    {   
+        "serial" : "3",
+        "quantity" : 3
+    },
+    {
+        "serial" : "4",
+        "quantity" : 2
+    },
+    {
+        "serial" : "5",
+        "quantity" : 2  
+    },
+    {
+        "serial" : "6",
+        "quantity" : 1  
+    },
+    {
+        "serial" : "7",
+        "quantity" : 2
+    },
+    {
+        "serial" : "8",
+        "quantity" : 2
+    },
+    {
+        "serial" : "9",
+        "quantity" : 1
+    },
+    {
+        "serial" : "10",
+        "quantity" : 1
+    },
+    {
+        "serial" : "11",
+        "quantity" : 1
+    }
+]
