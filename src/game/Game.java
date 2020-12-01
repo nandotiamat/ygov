@@ -24,6 +24,7 @@ public class Game extends Canvas implements Runnable {
         mainMenu = new MainMenu();
         table = new Table();
         new Deck();
+	    this.addKeyListener(new KeyInput());   //travel è stato qui
         this.addMouseListener(new Mouse(table));
         new Window(WIDTH, HEIGHT, TITLE, this);
     }
