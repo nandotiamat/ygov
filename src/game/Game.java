@@ -1,4 +1,5 @@
 package src.game;
+import src.game.card.*;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -22,6 +23,7 @@ public class Game extends Canvas implements Runnable {
     public Game() {
         mainMenu = new MainMenu();
         table = new Table();
+        new Deck();
         this.addMouseListener(new Mouse(table));
         new Window(WIDTH, HEIGHT, TITLE, this);
     }
