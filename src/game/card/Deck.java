@@ -1,9 +1,9 @@
 package src.game.card;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.awt.image.BufferedImage;
@@ -26,7 +26,7 @@ public class Deck {
         for (int i=0; i<5; i++){
             Collections.shuffle(deck);
         }
-        //printDeck(deck);
+        printDeck(deck);
     }
 
     private ArrayList<CardObject> getDeck() {
@@ -64,10 +64,9 @@ public class Deck {
             String description = (String) cardParsed.get("carddescription");
             BufferedImage image = null;
             try {
-                URL url = new URL((String) cardParsed.get("picture"));
-                image = ImageIO.read(url);
+                image = ImageIO.read(new File("src/img/" + index + ".png"));
             } catch(IOException e) {
-                System.out.println("Cant download image from web");
+                System.out.println("Cant load image from files");
             }
             String cardType = (String) cardParsed.get("cardtype");
             int atk = 0;
@@ -121,6 +120,9 @@ public class Deck {
         }
     } 
 
+    public CardObject draw() {
+        return deck.remove(0);
+    }
     /*
     private void shuffle(ArrayList<CardObject> deck) {
         Random random = new Random();

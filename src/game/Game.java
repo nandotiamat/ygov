@@ -17,13 +17,14 @@ public class Game extends Canvas implements Runnable {
 
     private MainMenu mainMenu;
     private Table table;
+    private Hand hand;
 
     private boolean running = false;
 
     public Game() {
         mainMenu = new MainMenu();
         table = new Table();
-        new Deck();
+        hand = new Hand(new Deck());
 	    this.addKeyListener(new KeyInput());   //travel è stato qui
         this.addMouseListener(new Mouse(table));
         new Window(WIDTH, HEIGHT, TITLE, this);
@@ -95,6 +96,7 @@ public class Game extends Canvas implements Runnable {
         
         if (gameState == STATE.Match) 
             table.render(g);
+            hand.render(g);
         
             g.dispose();
         bs.show();

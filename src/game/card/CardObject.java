@@ -3,6 +3,11 @@ package src.game.card;
 import java.awt.image.BufferedImage;
 
 public abstract class CardObject {
+
+    public static float whratio = 0.68688f;
+    public static int cardWidth = 60;
+    public static int cardHeight = (int) (((float) cardWidth)/whratio); 
+
     protected String name;
     protected TYPE type;
     protected int id;
@@ -19,6 +24,9 @@ public abstract class CardObject {
 
     public abstract void destroy(); 
 
+    public BufferedImage getImage() {
+        return image;
+    }
     //implement getters and setters eventually
     
 }
