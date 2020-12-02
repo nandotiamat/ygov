@@ -2,9 +2,9 @@ package src.game.card;
 
 import java.awt.image.BufferedImage;
 
-public class QuickPlaySpell extends Spell {
+public class NormalSpell extends Spell {
 
-    public QuickPlaySpell(String name, int id, String description, BufferedImage image) {
+    public NormalSpell(String name, int id, String description, BufferedImage image) {
         super(name, id, description, image);
     }
 

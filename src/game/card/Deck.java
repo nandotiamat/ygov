@@ -3,7 +3,11 @@ package src.game.card;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,8 +19,14 @@ public class Deck {
     private ArrayList<CardObject> deck;
 
     public Deck() {
-        this.deck = getDeck();
-        printDeck(this.deck);
+        deck = getDeck();
+        System.out.println(deck.size());
+        //printDeck(deck);
+        System.out.println("Now i shuffle...");
+        for (int i=0; i<5; i++){
+            Collections.shuffle(deck);
+        }
+        //printDeck(deck);
     }
 
     private ArrayList<CardObject> getDeck() {
@@ -42,56 +52,63 @@ public class Deck {
             int index = Integer.parseInt((String) element.get("serial"));
 
             JSONObject cardParsed = null;
+
             for (int i=0; i<database.size(); i++) {
                  cardParsed = (JSONObject) database.get(i);
-
                 if (Integer.parseInt((String) cardParsed.get("serial")) == index) {
                     break;
                 }
             }
-
+            
             String name = (String) cardParsed.get("name");
             String description = (String) cardParsed.get("carddescription");
+            BufferedImage image = null;
+            try {
+                URL url = new URL((String) cardParsed.get("picture"));
+                image = ImageIO.read(url);
+            } catch(IOException e) {
+                System.out.println("Cant download image from web");
+            }
             String cardType = (String) cardParsed.get("cardtype");
             int atk = 0;
             int def = 0;
             int level = 0;
-            
-            if ((String)cardParsed.get("atk") != "") {
+    
+            if (!cardType.equals("Trap") && !cardType.equals("Spell")) {
                 atk = Integer.parseInt((String) cardParsed.get("atk"));
-            }
-            if ((String)cardParsed.get("def") != "") {
                 def = Integer.parseInt((String) cardParsed.get("def"));
-            }
-            if ((String)cardParsed.get("level") != "") {
                 level = Integer.parseInt((String) cardParsed.get("level"));
             }
 
             if (cardType.equals("Monster")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new NormalMonster(name, TYPE.Dark, index, description, level, atk, def));
+                    deck.add(new NormalMonster(name, TYPE.Dark, index, description, image, level, atk, def));
                 }
             } else if (cardType.equals("Effect")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new EffectMonster(name, TYPE.Dark, index, description, level, atk, def));
+                    deck.add(new EffectMonster(name, TYPE.Dark, index, description, image, level, atk, def));
                 }
             } else if (cardType.equals("Ritual")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new RitualMonster(name, TYPE.Dark, index, description, level, atk, def));
+                    deck.add(new RitualMonster(name, TYPE.Dark, index, description, image, level, atk, def));
                 }
             } else if (cardType.equals("Spell")) {
                 if (((String) cardParsed.get("trapmagictype")).equals("Ritual")) {
                     for (int i = 0; i < (long) element.get("quantity"); i++) {
-                        deck.add(new RitualSpell(name, index, description));
+                        deck.add(new NormalSpell(name, index, description, image));
                     }
                 } else if (((String) cardParsed.get("trapmagictype")).equals("Quick-Play")) {
                     for (int i = 0; i < (long) element.get("quantity"); i++) {
-                        deck.add(new QuickPlaySpell(name, index, description));
+                        deck.add(new QuickPlaySpell(name, index, description, image));
+                    }
+                } else if (((String) cardParsed.get("trapmagictype")).equals("None")) {
+                    for (int i = 0; i < (long) element.get("quantity"); i++) {
+                        deck.add(new NormalSpell(name, index, description, image));
                     }
                 }
             } else if (cardType.equals("Trap")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new Trap(name, index, description));
+                    deck.add(new Trap(name, index, description, image));
                 }
             }
         }
@@ -103,4 +120,16 @@ public class Deck {
             System.out.println(deck.get(i).name);
         }
     } 
+
+    /*
+    private void shuffle(ArrayList<CardObject> deck) {
+        Random random = new Random();
+        
+
+        for (int i = deck.size() - 1; i > 0; i--) {
+            int j = random.nextInt(i+1);
+            T obj = 
+        }
+    }
+    */
 }

@@ -42,5 +42,9 @@
     {
         "serial" : "11",
         "quantity" : 1
+    },
+    {
+        "serial" : "12",
+        "quantity" : 1
     }
 ]

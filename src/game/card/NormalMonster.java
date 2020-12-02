@@ -1,9 +1,11 @@
 package src.game.card;
 
+import java.awt.image.BufferedImage;
+
 public class NormalMonster extends Monster{
 
-    public NormalMonster(String name, TYPE type, int id, String description, int level, int atk, int def) {
-        super(name, type, id, description, level, atk, def);
+    public NormalMonster(String name, TYPE type, int id, String description, BufferedImage image, int level, int atk, int def) {
+        super(name, type, id, description, image, level, atk, def);
         
     }
 
