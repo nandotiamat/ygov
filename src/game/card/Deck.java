@@ -20,13 +20,9 @@ public class Deck {
 
     public Deck() {
         deck = getDeck();
-        System.out.println(deck.size());
-        //printDeck(deck);
-        System.out.println("Now i shuffle...");
         for (int i=0; i<5; i++){
             Collections.shuffle(deck);
         }
-        printDeck(deck);
     }
 
     private ArrayList<CardObject> getDeck() {
@@ -115,7 +111,7 @@ public class Deck {
         return deck;
     }
 
-    private void printDeck(ArrayList<CardObject> deck) {
+    private void printDeck() {
         for (int i=0; i < deck.size(); i++) {
             System.out.println(deck.get(i).name);
         }
@@ -129,15 +125,4 @@ public class Deck {
             return null;
         }
     }
-    /*
-    private void shuffle(ArrayList<CardObject> deck) {
-        Random random = new Random();
-        
-
-        for (int i = deck.size() - 1; i > 0; i--) {
-            int j = random.nextInt(i+1);
-            T obj = 
-        }
-    }
-    */
 }
