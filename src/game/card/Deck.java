@@ -38,6 +38,7 @@ public class Deck {
         try {
             database = (JSONArray) parser.parse(new FileReader("src/game/list.json"));
             deckDb = (JSONArray) parser.parse(new FileReader("src/game/bellinideck.json"));
+            deckDb = (JSONArray) deckDb.get(0);
         } catch (FileNotFoundException e) {
             System.out.println("JSON file not found.");
         } catch (ParseException e) {
@@ -121,7 +122,12 @@ public class Deck {
     } 
 
     public CardObject draw() {
-        return deck.remove(0);
+        if (deck.size() != 0) {
+            return deck.remove(0);
+        } else {
+            System.out.println("Hai finito il deck");
+            return null;
+        }
     }
     /*
     private void shuffle(ArrayList<CardObject> deck) {

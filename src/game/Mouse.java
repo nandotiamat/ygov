@@ -1,14 +1,16 @@
 package src.game;
-
+import src.game.player.Player;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Mouse extends MouseAdapter {
     
-    Table table;
+    private Table table;
+    private Player player;
 
-    public Mouse(Table table) {
+    public Mouse(Table table, Player player) {
         this.table = table;
+        this.player = player;
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -28,6 +30,12 @@ public class Mouse extends MouseAdapter {
                 }
             } 
             else table.isDrawable = false;
+
+            if (e.getX() > 0 && e.getX() < 100) {
+                if (e.getY() > 0 && e.getY() < 100) {
+                    player.draw();;
+                }   
+            }
         }
     }
 }
