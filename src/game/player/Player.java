@@ -5,6 +5,7 @@ import src.game.card.Deck;
 import src.game.card.ExtraDeck;
 import src.game.Graveyard;
 import src.game.Hand;
+import src.game.Table;
 
 import java.awt.Graphics;
 
@@ -13,17 +14,22 @@ public class Player {
     private Hand hand;
     private Graveyard graveyard;
     private ExtraDeck extraDeck;
+    private Table table;
 
-    public Player(Deck deck, Hand hand, Graveyard graveyard, ExtraDeck extraDeck) {
+    public Player(Deck deck, Hand hand, Graveyard graveyard, ExtraDeck extraDeck, Table table) {
         this.deck = deck;
         this.hand = hand;
         this.graveyard = graveyard;
         this.extraDeck = extraDeck;
+        this.table = table;
     }
 
     public void render(Graphics g) {
+        table.renderPlayerTable(g);
         hand.render(g);
-        graveyard.render(g);
+        deck.render(g, table.getPlayerFieldCardPositions()[0][4]);
+        extraDeck.render(g, table.getPlayerFieldCardPositions()[0][0]);
+        graveyard.render(g, table.getPlayerFieldCardPositions()[1][4]);
     }
 
     public void draw() {

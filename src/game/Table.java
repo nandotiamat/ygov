@@ -72,8 +72,8 @@ public class Table {
         g.fillRect(0,0, 100, 100);
         g.setColor(Color.black);
         g.drawString("Draw", 50, 50);
-        renderOpponentTable(g);
-        renderPlayerTable(g);
+        //renderOpponentTable(g);
+        //renderPlayerTable(g);
         if (isDrawable) g.drawImage(nonResizedGenericCard, 100, 50, null);
     }
 
@@ -97,7 +97,7 @@ public class Table {
         return 2*spaceBetweenCards + cardHeight;
     }
 
-    void renderOpponentTable(Graphics g) {
+    public void renderOpponentTable(Graphics g) {
         //opponent table
         Graphics2D g2d = (Graphics2D) g;
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
@@ -114,21 +114,21 @@ public class Table {
         g.drawImage(genericCard, opponentFieldCardPositions[1][3][0], opponentFieldCardPositions[1][3][1], null);
     }
 
-    void renderPlayerTable(Graphics g) {
+    public void renderPlayerTable(Graphics g) {
         //player table
         Graphics2D g2d = (Graphics2D) g;
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         g.fillRect(centerTableX(tableWidth), centerPlayerTableY(), tableWidth, tableHeight); 
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         //trapmagic zone
-        g.drawImage(extraDeckBack, playerFieldCardPositions[0][0][0], playerFieldCardPositions[0][0][1], null);
-        g.drawImage(cardBack, playerFieldCardPositions[0][1][0], playerFieldCardPositions[0][1][1], null);
-        g.drawImage(cardBack, playerFieldCardPositions[0][2][0], playerFieldCardPositions[0][2][1], null); 
-        g.drawImage(cardBack, playerFieldCardPositions[0][3][0], playerFieldCardPositions[0][3][1], null); 
-        g.drawImage(deckBack, playerFieldCardPositions[0][4][0], playerFieldCardPositions[0][4][1], null); 
+        // g.drawImage(extraDeckBack, playerFieldCardPositions[0][0][0], playerFieldCardPositions[0][0][1], null);
+        // g.drawImage(cardBack, playerFieldCardPositions[0][1][0], playerFieldCardPositions[0][1][1], null);
+        // g.drawImage(cardBack, playerFieldCardPositions[0][2][0], playerFieldCardPositions[0][2][1], null); 
+        // g.drawImage(cardBack, playerFieldCardPositions[0][3][0], playerFieldCardPositions[0][3][1], null); 
+        // g.drawImage(deckBack, playerFieldCardPositions[0][4][0], playerFieldCardPositions[0][4][1], null); 
         //monster zone
-        g.drawImage(genericCard,  playerFieldCardPositions[1][3][0],  playerFieldCardPositions[1][3][1], null);
-        g.drawImage(graveyard, playerFieldCardPositions[1][4][0],  playerFieldCardPositions[1][4][1], null);
+        // g.drawImage(genericCard,  playerFieldCardPositions[1][3][0],  playerFieldCardPositions[1][3][1], null);
+        // g.drawImage(graveyard, playerFieldCardPositions[1][4][0],  playerFieldCardPositions[1][4][1], null);
     }
 
     public int[][][] getPlayerFieldCardPositions() {

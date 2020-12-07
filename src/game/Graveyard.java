@@ -14,13 +14,13 @@ public class Graveyard {
         graveyard = new ArrayList<CardObject>();
     }
 
-    public void render (Graphics g) {
+    public void render(Graphics g, int[] pos) {
         if (graveyard.size() > 0) {
             CardObject topCard = graveyard.get(graveyard.size() - 1);
-            g.drawImage(topCard.getHandImage(), 100, 100, null);
+            g.drawImage(topCard.getHandImage(), pos[0], pos[1], null);
             g.setColor(Color.white);
             g.setFont(new Font("Arial", 1, 30));
-            g.drawString(Integer.toString(graveyard.size()), 125, 125);
+            g.drawString(Integer.toString(graveyard.size()), pos[0] + 20, pos[1] + 40);
         }
     }
 

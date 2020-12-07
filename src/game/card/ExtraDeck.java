@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import java.awt.Image;
+import java.awt.Graphics;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -16,10 +18,31 @@ import org.json.simple.parser.ParseException;
 public class ExtraDeck {
 
     private ArrayList<CardObject> deck;
+    private BufferedImage backCard;
 
     public ExtraDeck() {
         deck = getDeck();
-        printDeck();
+        try {
+            backCard = ImageIO.read(new File("src/img/cardBack.png"));
+            backCard = resizeImage(backCard, CardObject.cardWidth, CardObject.cardHeight);
+
+        } catch (IOException e) {
+            System.out.println("Error. Couldn't load back image of Deck class.");
+        }
+    }
+        
+    // DA RIMUOVERE E CREARE UN FILE APPOSITO CON QUESTA FUNZIONE CHE PUÒ SERVIRE UN
+    // PO IN GIRO!
+    private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
+        Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
+        return outputImage;
+    }
+
+    public void render(Graphics g, int[] pos) {
+        g.drawImage(backCard, pos[0], pos[1], null);
+        g.drawString(Integer.toString(deck.size()), pos[0] + 20, pos[1] + 40);
     }
 
     private ArrayList<CardObject> getDeck() {

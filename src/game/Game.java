@@ -25,7 +25,7 @@ public class Game extends Canvas implements Runnable {
     public Game() {
         mainMenu = new MainMenu();
         table = new Table();
-        player = new Player(new Deck(), new Hand(), new Graveyard(), new ExtraDeck());
+        player = new Player(new Deck(), new Hand(), new Graveyard(), new ExtraDeck(), table);
 	    this.addKeyListener(new KeyInput());   //travel è stato qui
         this.addMouseListener(new Mouse(table, player));
         new Window(WIDTH, HEIGHT, TITLE, this);
@@ -95,9 +95,10 @@ public class Game extends Canvas implements Runnable {
         if (gameState == STATE.MainMenu) 
             mainMenu.render(g);
         
-        if (gameState == STATE.Match) 
+        if (gameState == STATE.Match) {
             table.render(g);
             player.render(g);
+        }
         
             g.dispose();
         bs.show();
