@@ -4,8 +4,8 @@ import java.awt.image.BufferedImage;
 
 public class EffectMonster extends Monster{
 
-    public EffectMonster(String name, TYPE type, int id, String description, BufferedImage image, int level, int atk, int def) {
-        super(name, type, id, description, image, level, atk, def);
+    public EffectMonster(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image, int level, int atk, int def, String type) {
+        super(name, attribute, id, description, image, level, atk, def, type);
         
     }
 

@@ -1,6 +1,6 @@
 package src.game.card;
 
-public enum TYPE {
+public enum ATTRIBUTE {
     Light,
     Dark,
     Divine,
@@ -8,5 +8,5 @@ public enum TYPE {
     Fire,
     Water,
     Trap,
-    Spell;
+    Spell
 }

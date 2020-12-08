@@ -23,10 +23,10 @@ public class Deck {
     private BufferedImage backCard;
 
     public Deck() {
-        deck = getDeck();
-        for (int i = 0; i < 5; i++) {
-            Collections.shuffle(deck);
-        }
+        deck = parseDeck();
+        // for (int i = 0; i < 5; i++) {
+        //     Collections.shuffle(deck);
+        // }
         try {
             backCard = ImageIO.read(new File("src/img/cardBack.png"));
             backCard = resizeImage(backCard, CardObject.cardWidth, CardObject.cardHeight);
@@ -53,7 +53,7 @@ public class Deck {
         return outputImage;
     }
 
-    private ArrayList<CardObject> getDeck() {
+    private ArrayList<CardObject> parseDeck() {
         ArrayList<CardObject> deck = new ArrayList<CardObject>();
         JSONParser parser = new JSONParser();
         JSONArray database = null;
@@ -94,6 +94,8 @@ public class Deck {
                 System.out.println("Cant load image from files");
             }
             String cardType = (String) cardParsed.get("cardtype");
+            ATTRIBUTE attribute = null;
+            String type = null;
             int atk = 0;
             int def = 0;
             int level = 0;
@@ -102,19 +104,21 @@ public class Deck {
                 atk = Integer.parseInt((String) cardParsed.get("atk"));
                 def = Integer.parseInt((String) cardParsed.get("def"));
                 level = Integer.parseInt((String) cardParsed.get("level"));
+                attribute = ATTRIBUTE.valueOf((String) cardParsed.get("attribute"));
+                type = (String) cardParsed.get("type");
             }
 
             if (cardType.equals("Monster")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new NormalMonster(name, TYPE.Dark, index, description, image, level, atk, def));
+                    deck.add(new NormalMonster(name, attribute, index, description, image, level, atk, def, type));
                 }
             } else if (cardType.equals("Effect")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new EffectMonster(name, TYPE.Dark, index, description, image, level, atk, def));
+                    deck.add(new EffectMonster(name, attribute, index, description, image, level, atk, def, type));
                 }
             } else if (cardType.equals("Ritual")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new RitualMonster(name, TYPE.Dark, index, description, image, level, atk, def));
+                    deck.add(new RitualMonster(name, attribute, index, description, image, level, atk, def, type));
                 }
             } else if (cardType.equals("Spell")) {
                 if (((String) cardParsed.get("trapmagictype")).equals("Ritual")) {
@@ -139,7 +143,7 @@ public class Deck {
         return deck;
     }
 
-    private void printDeck() {
+    public void printDeck() {
         for (int i = 0; i < deck.size(); i++) {
             System.out.println(deck.get(i).name);
         }
@@ -152,5 +156,9 @@ public class Deck {
             System.out.println("Hai finito il deck");
             return null;
         }
+    }
+
+    public ArrayList<CardObject> getDeck() {
+        return deck;
     }
 }

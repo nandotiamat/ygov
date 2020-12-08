@@ -8,6 +8,7 @@ import src.game.Hand;
 import src.game.Table;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class Player {
     private Deck deck;
@@ -40,6 +41,10 @@ public class Player {
                 graveyard.getGraveyard().add(hand.getHand().remove(0));
             }
         }
+    }
+
+    public ArrayList<CardObject> getDeck() {
+        return deck.getDeck();
     }
     
 }

@@ -78,6 +78,8 @@ public class ExtraDeck {
             }
             String name = (String) cardParsed.get("name");
             String description = (String) cardParsed.get("carddescription");
+            ATTRIBUTE attribute = ATTRIBUTE.valueOf((String) cardParsed.get("attribute"));
+            String type = (String) cardParsed.get("type");
             BufferedImage image = null;
             try {
                 image = ImageIO.read(new File("src/img/" + index + ".png"));
@@ -89,14 +91,14 @@ public class ExtraDeck {
             int level = Integer.parseInt((String) cardParsed.get("level"));
 
             for (int i = 0; i < (long) element.get("quantity"); i++) {
-                deck.add(new FusionMonster(name, TYPE.Dark, index, description, image, level, atk, def));
+                deck.add(new FusionMonster(name, attribute, index, description, image, level, atk, def, type));
             }
             
         }
         return deck;
     }
 
-    private void printDeck() {
+    public void printDeck() {
         for (int i = 0; i < deck.size(); i++) {
             System.out.println(deck.get(i).name);
         }

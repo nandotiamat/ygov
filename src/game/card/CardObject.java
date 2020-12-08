@@ -11,21 +11,23 @@ public abstract class CardObject {
     public static int cardHeight = (int) (((float) cardWidth)/whratio); 
 
     protected String name;
-    protected TYPE type;
+    protected ATTRIBUTE attribute;
     protected int id;
     protected String description;
     protected BufferedImage image;
     private BufferedImage handImage;
+    private BufferedImage hudImage;
 
 
-    public CardObject(String name, TYPE type, int id, String description, BufferedImage image) {
+    public CardObject(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image) {
         this.name = name;
-        this.type = type;
+        this.attribute = attribute;
         this.id = id;
         this.description = description;
         this.image = image;
         try {
             handImage = resizeImage(image, cardWidth, cardHeight);
+            hudImage = resizeImage(image, cardWidth*3, cardHeight*3);
         } catch (Exception e) {
             System.out.println("its lit!");
         }
@@ -48,6 +50,19 @@ public abstract class CardObject {
     public BufferedImage getHandImage() {
         return handImage;
     }
+
+    public BufferedImage getHUDImage() {
+        return hudImage;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    
     //implement getters and setters eventually
     
 }

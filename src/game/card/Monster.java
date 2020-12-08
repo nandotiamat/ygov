@@ -7,15 +7,31 @@ public abstract class Monster extends CardObject{
     protected int level;
     protected int atk;
     protected int def;
+    protected String type;
 
-
-    public Monster(String name, TYPE type, int id, String description, BufferedImage image, int level, int atk, int def) {
-        super(name, type, id, description, image);
+    public Monster(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image, int level, int atk, int def, String type) {
+        super(name, attribute, id, description, image);
         this.level = level;
         this.atk = atk;
         this.def = def; 
+        this.type = type;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
+    public int getAtk() {
+        return atk;
+    }
+
+    public int getDef() {
+        return def;
+    }
+
+    public String getType() {
+        return type;
+    }
     //implement getters and setters eventually
 
     public abstract void attack();
