@@ -63,6 +63,9 @@ public abstract class CardObject {
         return description;
     }
     
+    public ATTRIBUTE getAttribute() {
+        return attribute;
+    }
     //implement getters and setters eventually
     
 }

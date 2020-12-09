@@ -1,12 +1,13 @@
 package src.game.card;
 
 public enum ATTRIBUTE {
-    Light,
-    Dark,
-    Divine,
+    Wind,
+    Water,
     Earth,
     Fire,
-    Water,
-    Trap,
-    Spell
+    Dark,
+    Light,
+    Divine,
+    Spell,
+    Trap
 }
