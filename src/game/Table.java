@@ -68,10 +68,6 @@ public class Table {
 
     public void render(Graphics g) {
         g.drawImage(wallpaper, 0, 0, null);
-        g.setColor(Color.white);
-        g.fillRect(0,0, 100, 100);
-        g.setColor(Color.black);
-        g.drawString("Draw", 50, 50);
         //renderOpponentTable(g);
         //renderPlayerTable(g);
         if (isDrawable) g.drawImage(nonResizedGenericCard, 100, 50, null);

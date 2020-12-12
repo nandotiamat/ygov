@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.awt.Image;
 import java.awt.Graphics;
+import java.awt.Color;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -42,6 +43,7 @@ public class ExtraDeck {
 
     public void render(Graphics g, int[] pos) {
         g.drawImage(backCard, pos[0], pos[1], null);
+        g.setColor(Color.white);
         g.drawString(Integer.toString(deck.size()), pos[0] + 20, pos[1] + 40);
     }
 

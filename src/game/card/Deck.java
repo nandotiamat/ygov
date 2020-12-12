@@ -24,9 +24,9 @@ public class Deck {
 
     public Deck() {
         deck = parseDeck();
-        // for (int i = 0; i < 5; i++) {
-        //     Collections.shuffle(deck);
-        // }
+        for (int i = 0; i < 5; i++) {
+            Collections.shuffle(deck);
+        }
         try {
             backCard = ImageIO.read(new File("src/img/cardBack.png"));
             backCard = resizeImage(backCard, CardObject.cardWidth, CardObject.cardHeight);
@@ -38,7 +38,7 @@ public class Deck {
 
     public void render(Graphics g, int[] pos) {
         if (deck.size() > 0) {
-            g.drawImage(backCard, pos[0], pos[1], null);
+            g.drawImage(backCard, pos[0], pos[1], null); 
             g.setColor(Color.white);
             g.drawString(Integer.toString(deck.size()), pos[0] + 20, pos[1] + 40);
         }

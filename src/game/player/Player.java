@@ -3,6 +3,7 @@ package src.game.player;
 import src.game.card.CardObject;
 import src.game.card.Deck;
 import src.game.card.ExtraDeck;
+import src.game.Game;
 import src.game.Graveyard;
 import src.game.Hand;
 import src.game.Table;
@@ -37,6 +38,15 @@ public class Player {
         CardObject cardDrawed = deck.draw();
         if (cardDrawed != null) {
             hand.getHand().add(cardDrawed);
+            if (hand.getHand().size() < 5) {
+                hand.getPositions().add(new int[] {0,0});
+                for (int i=0; i<hand.getPositions().size(); i++) {                 
+                    int x = Game.WIDTH / 2 - 10 -(CardObject.cardWidth / 2) - (hand.getHand().size()/2 - (i + 1)) * (CardObject.cardWidth + 10);
+                    int y = Game.HEIGHT - CardObject.cardHeight - 20;
+                    hand.getPositions().get(i)[0] = x;
+                    hand.getPositions().get(i)[1] = y;
+                }
+            }
             if (hand.getHand().size() >= 5) {
                 graveyard.getGraveyard().add(hand.getHand().remove(0));
             }
@@ -46,5 +56,14 @@ public class Player {
     public ArrayList<CardObject> getDeck() {
         return deck.getDeck();
     }
+
+
+    public Hand getHand() {
+        return hand;
+    }
+
+    // public ArrayList<CardObject> getHand() {
+    //     return hand.getHand();
+    // }
     
 }

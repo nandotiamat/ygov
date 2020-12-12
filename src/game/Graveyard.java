@@ -19,8 +19,10 @@ public class Graveyard {
             CardObject topCard = graveyard.get(graveyard.size() - 1);
             g.drawImage(topCard.getHandImage(), pos[0], pos[1], null);
             g.setColor(Color.white);
+            Font tmp = g.getFont();
             g.setFont(new Font("Arial", 1, 30));
             g.drawString(Integer.toString(graveyard.size()), pos[0] + 20, pos[1] + 40);
+            g.setFont(tmp);
         }
     }
 
