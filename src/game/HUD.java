@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class HUD {
-    private Table table;
     private CardObject card;
     private BufferedImage[] assets;
 
@@ -30,9 +29,9 @@ public class HUD {
     public final Color spellColor = new Color(28, 124, 112);
     public final Color trapColor = new Color(147, 56, 115);
 
-    public HUD(Table table, CardObject card) {
-        this.table = table;
-        //this.card = card;
+    public HUD() {
+        // NEED TO ADD PLAYER!
+        card = null;
         assets = new BufferedImage[12];
         try {
             BufferedImage tmp = ImageIO.read(new File("src/img/assets.png"));

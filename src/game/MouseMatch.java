@@ -20,7 +20,7 @@ public class MouseMatch extends MouseAdapter {
         this.hud = hud;
     }
 
-    public int inRectangle(int x, int y, ArrayList<int[]> positions) {
+    public int inHand(int x, int y, ArrayList<int[]> positions) {
         for (int i=0; i<positions.size(); i++) {
             if(x > positions.get(i)[0] && x < positions.get(i)[0] + CardObject.cardWidth) {
                 if (y > positions.get(i)[1] && y < positions.get(i)[1] + CardObject.cardHeight) {
@@ -50,11 +50,15 @@ public class MouseMatch extends MouseAdapter {
             }
 
             // testing in rectangle
-            int i = inRectangle(e.getX(), e.getY(), player.getHand().getPositions());
+            int i = inHand(e.getX(), e.getY(), player.getHand().getPositions());
             if (i != -1) {
-                hud.setCard(player.getHand().getHand().get(i));
+                CardObject selectedCard = player.getHand().getHand().get(i);
+                hud.setCard(selectedCard);
+                selectedCard.setIsSelected(true);
             } else
                 hud.setCard(null);
+
+            
         }
     }
 }

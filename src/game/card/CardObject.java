@@ -2,6 +2,7 @@ package src.game.card;
 
 import java.awt.image.BufferedImage;
 import java.awt.Image;
+import java.awt.Graphics;
 import java.io.IOException;
 
 public abstract class CardObject {
@@ -9,6 +10,11 @@ public abstract class CardObject {
     public static float whratio = 0.68688f;
     public static int cardWidth = 60;
     public static int cardHeight = (int) (((float) cardWidth)/whratio); 
+    public static final int HANDSIZE = 1;
+    public static final int HUDSIZE = 2;
+
+    protected int x;
+    protected int y;
 
     protected String name;
     protected ATTRIBUTE attribute;
@@ -17,6 +23,7 @@ public abstract class CardObject {
     protected BufferedImage image;
     private BufferedImage handImage;
     private BufferedImage hudImage;
+    private boolean isSelected;
 
 
     public CardObject(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image) {
@@ -25,12 +32,14 @@ public abstract class CardObject {
         this.id = id;
         this.description = description;
         this.image = image;
+
         try {
             handImage = resizeImage(image, cardWidth, cardHeight);
             hudImage = resizeImage(image, cardWidth*3, cardHeight*3);
         } catch (Exception e) {
             System.out.println("its lit!");
         }
+        isSelected = false;
     }
 
     //DA RIMUOVERE E CREARE UN FILE APPOSITO CON QUESTA FUNZIONE CHE PUÒ SERVIRE UN PO IN GIRO!
@@ -42,6 +51,15 @@ public abstract class CardObject {
     }
 
     public abstract void destroy(); 
+    // public abstract void renderOptions(); metodo che si occupa della stampa dei quadratini delle azioni della carta
+
+    public void render(Graphics g, int size) {
+        if (size == HANDSIZE) {
+            g.drawImage(handImage, x, y, null);
+        } else if (size == HUDSIZE) {
+            g.drawImage(hudImage, x, y, null);
+        }
+    }
 
     public BufferedImage getImage() {
         return image;
@@ -66,6 +84,31 @@ public abstract class CardObject {
     public ATTRIBUTE getAttribute() {
         return attribute;
     }
+
+    public boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean bool) {
+        isSelected = bool;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+    
     //implement getters and setters eventually
     
 }

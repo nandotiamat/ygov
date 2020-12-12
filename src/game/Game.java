@@ -27,7 +27,7 @@ public class Game extends Canvas implements Runnable {
         mainMenu = new MainMenu();
         table = new Table();
         player = new Player(new Deck(), new Hand(), new Graveyard(), new ExtraDeck(), table);
-        hud = new HUD(table, player.getDeck().get(16));
+        hud = new HUD();
 	    this.addKeyListener(new KeyInput());   //travel è stato qui
         this.addMouseListener(new Mouse(table, player, this, hud));
         new Window(WIDTH, HEIGHT, TITLE, this);

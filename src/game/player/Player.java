@@ -27,7 +27,6 @@ public class Player {
     }
 
     public void render(Graphics g) {
-        table.renderPlayerTable(g);
         hand.render(g);
         deck.render(g, table.getPlayerFieldCardPositions()[0][4]);
         extraDeck.render(g, table.getPlayerFieldCardPositions()[0][0]);
@@ -37,19 +36,18 @@ public class Player {
     public void draw() {
         CardObject cardDrawed = deck.draw();
         if (cardDrawed != null) {
-            hand.getHand().add(cardDrawed);
-            if (hand.getHand().size() < 5) {
-                hand.getPositions().add(new int[] {0,0});
-                for (int i=0; i<hand.getPositions().size(); i++) {                 
-                    int x = Game.WIDTH / 2 - 10 -(CardObject.cardWidth / 2) - (hand.getHand().size()/2 - (i + 1)) * (CardObject.cardWidth + 10);
-                    int y = Game.HEIGHT - CardObject.cardHeight - 20;
-                    hand.getPositions().get(i)[0] = x;
-                    hand.getPositions().get(i)[1] = y;
-                }
+            ArrayList<CardObject> cards = hand.getHand();
+            cards.add(cardDrawed);
+
+            if (cards.size() >= 5) {
+                graveyard.getGraveyard().add(cards.remove(0));
             }
-            if (hand.getHand().size() >= 5) {
-                graveyard.getGraveyard().add(hand.getHand().remove(0));
+
+            for (int i=0; i<cards.size(); i++) {
+                cards.get(i).setX(Game.WIDTH / 2 - 10 -(CardObject.cardWidth / 2) - (cards.size()/2 - (i + 1)) * (CardObject.cardWidth + 10));               
+                cards.get(i).setY(Game.HEIGHT - CardObject.cardHeight - 20);
             }
+
         }
     }
 

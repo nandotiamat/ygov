@@ -11,6 +11,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import src.game.card.CardObject;
+
 public class Table {
 
     public boolean isDrawable = false; 
@@ -68,8 +70,8 @@ public class Table {
 
     public void render(Graphics g) {
         g.drawImage(wallpaper, 0, 0, null);
+        renderPlayerTable(g);
         //renderOpponentTable(g);
-        //renderPlayerTable(g);
         if (isDrawable) g.drawImage(nonResizedGenericCard, 100, 50, null);
     }
 
@@ -99,15 +101,6 @@ public class Table {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         g.fillRect(centerTableX(tableWidth), centerOpponentTableY(), tableWidth, tableHeight); 
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-        //trapmagic zone
-        g.drawImage(extraDeckBack, opponentFieldCardPositions[0][0][0], opponentFieldCardPositions[0][0][1], null);
-        g.drawImage(cardBack, opponentFieldCardPositions[0][1][0], opponentFieldCardPositions[0][1][1], null);
-        g.drawImage(cardBack, opponentFieldCardPositions[0][2][0], opponentFieldCardPositions[0][2][1], null); 
-        g.drawImage(cardBack, opponentFieldCardPositions[0][3][0], opponentFieldCardPositions[0][3][1], null); 
-        g.drawImage(deckBack, opponentFieldCardPositions[0][4][0], opponentFieldCardPositions[0][4][1], null); 
-        //monster zone
-        g.drawImage(graveyard, opponentFieldCardPositions[1][4][0],  opponentFieldCardPositions[1][0][1], null);
-        g.drawImage(genericCard, opponentFieldCardPositions[1][3][0], opponentFieldCardPositions[1][3][1], null);
     }
 
     public void renderPlayerTable(Graphics g) {
@@ -116,15 +109,7 @@ public class Table {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         g.fillRect(centerTableX(tableWidth), centerPlayerTableY(), tableWidth, tableHeight); 
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-        //trapmagic zone
-        // g.drawImage(extraDeckBack, playerFieldCardPositions[0][0][0], playerFieldCardPositions[0][0][1], null);
-        // g.drawImage(cardBack, playerFieldCardPositions[0][1][0], playerFieldCardPositions[0][1][1], null);
-        // g.drawImage(cardBack, playerFieldCardPositions[0][2][0], playerFieldCardPositions[0][2][1], null); 
-        // g.drawImage(cardBack, playerFieldCardPositions[0][3][0], playerFieldCardPositions[0][3][1], null); 
-        // g.drawImage(deckBack, playerFieldCardPositions[0][4][0], playerFieldCardPositions[0][4][1], null); 
-        //monster zone
-        // g.drawImage(genericCard,  playerFieldCardPositions[1][3][0],  playerFieldCardPositions[1][3][1], null);
-        // g.drawImage(graveyard, playerFieldCardPositions[1][4][0],  playerFieldCardPositions[1][4][1], null);
+        g.drawImage(graveyard, playerFieldCardPositions[1][4][0], playerFieldCardPositions[1][4][1], null);
     }
 
     public int[][][] getPlayerFieldCardPositions() {
