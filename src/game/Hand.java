@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
 public class Hand {
     private ArrayList<CardObject> hand;
@@ -19,8 +18,9 @@ public class Hand {
         if (Game.gameState == STATE.Match) {
             for (int i=0; i < hand.size(); i++) {
                 CardObject card = hand.get(i);
-                BufferedImage image = card.getHandImage();
-                g.drawImage(image, card.getX(), card.getY(), null);
+                card.render(g, CardObject.HANDSIZE);
+                // BufferedImage image = card.getHandImage();
+                // g.drawImage(image, card.getX(), card.getY(), null);
             }
         }
     }

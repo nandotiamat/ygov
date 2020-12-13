@@ -140,4 +140,8 @@ public class HUD {
         this.card = card;
     }
 
+    public CardObject getCard() {
+        return card;
+    }
+
 }

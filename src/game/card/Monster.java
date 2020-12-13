@@ -1,6 +1,11 @@
 package src.game.card;
 
+import src.game.Hand;
+import src.game.Table;
+
 import java.awt.image.BufferedImage;
+import java.awt.Graphics;
+import java.awt.Color;
 
 public abstract class Monster extends CardObject{
 
@@ -15,6 +20,20 @@ public abstract class Monster extends CardObject{
         this.atk = atk;
         this.def = def; 
         this.type = type;
+    }
+
+    public void summon(Hand hand, Table table) {
+        hand.getHand().remove(this); 
+        table.summonMonster(this);
+    }
+
+    public void renderOptions(Graphics g) {
+        if (this.isSelected) {       
+            if (this.isSettable) {
+                g.setColor(Color.white);
+                g.fillRect(this.x + CardObject.cardWidth/2 - 15, this.y - 50, 30, 30);
+            }
+        }
     }
 
     public int getLevel() {
@@ -35,6 +54,5 @@ public abstract class Monster extends CardObject{
     //implement getters and setters eventually
 
     public abstract void attack();
-    public abstract void summon();
     public abstract void set();
 }

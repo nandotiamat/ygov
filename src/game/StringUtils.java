@@ -2,7 +2,6 @@ package src.game;
 
 import java.awt.FontMetrics;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class StringUtils {
    * @param maxWidth
    *          maximum width of the line(s)
    */
-  public static void wrapLineInto(String line, List list, FontMetrics fm, int maxWidth) {
+  public static void wrapLineInto(String line, List<String> list, FontMetrics fm, int maxWidth) {
     int len = line.length();
     int width;
     while (len > 0 && (width = fm.stringWidth(line)) > maxWidth) {
@@ -133,8 +132,8 @@ public class StringUtils {
    *          the string to split
    * @return a non-empty list of strings
    */
-  public static List splitIntoLines(String str) {
-    ArrayList strings = new ArrayList();
+  public static List<String> splitIntoLines(String str) {
+    ArrayList<String> strings = new ArrayList<String>();
 
     int len = str.length();
     if (len == 0) {

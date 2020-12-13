@@ -21,10 +21,12 @@ public abstract class CardObject {
     protected int id;
     protected String description;
     protected BufferedImage image;
-    private BufferedImage handImage;
-    private BufferedImage hudImage;
-    private boolean isSelected;
+    protected BufferedImage handImage;
+    protected BufferedImage hudImage;
 
+    protected boolean isSelected;
+    protected boolean isSettable;
+    
 
     public CardObject(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image) {
         this.name = name;
@@ -40,6 +42,7 @@ public abstract class CardObject {
             System.out.println("its lit!");
         }
         isSelected = false;
+        isSettable = true;
     }
 
     //DA RIMUOVERE E CREARE UN FILE APPOSITO CON QUESTA FUNZIONE CHE PUÒ SERVIRE UN PO IN GIRO!
@@ -51,7 +54,7 @@ public abstract class CardObject {
     }
 
     public abstract void destroy(); 
-    // public abstract void renderOptions(); metodo che si occupa della stampa dei quadratini delle azioni della carta
+    public abstract void renderOptions(Graphics g);
 
     public void render(Graphics g, int size) {
         if (size == HANDSIZE) {
@@ -59,6 +62,7 @@ public abstract class CardObject {
         } else if (size == HUDSIZE) {
             g.drawImage(hudImage, x, y, null);
         }
+        renderOptions(g);
     }
 
     public BufferedImage getImage() {
@@ -93,6 +97,10 @@ public abstract class CardObject {
         isSelected = bool;
     }
 
+    public boolean getIsSettable() {
+        return isSettable;
+    }
+
     public int getX() {
         return x;
     }
@@ -108,7 +116,7 @@ public abstract class CardObject {
     public void setY(int y) {
         this.y = y;
     }
-    
+
     //implement getters and setters eventually
     
 }

@@ -1,5 +1,6 @@
 package src.game.card;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 public class QuickPlaySpell extends Spell {
@@ -8,5 +9,12 @@ public class QuickPlaySpell extends Spell {
         super(name, id, description, image);
     }
 
-    public void destroy() {}
+    public void destroy() {
+    }
+
+    @Override
+    public void renderOptions(Graphics g) {
+        // TODO Auto-generated method stub
+
+    }
 }

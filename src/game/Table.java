@@ -1,6 +1,5 @@
 package src.game;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -8,10 +7,9 @@ import java.awt.Image;
 import java.awt.AlphaComposite;
 import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
+import java.util.ArrayList;
 import src.game.card.CardObject;
+import javax.imageio.ImageIO;
 
 public class Table {
 
@@ -27,10 +25,11 @@ public class Table {
 
     private int[][][] opponentFieldCardPositions = new int[2][5][2];
     private int[][][] playerFieldCardPositions = new int[2][5][2];
+    private ArrayList<CardObject> playerMonsterOnField = new ArrayList<CardObject>();
+
 
     private BufferedImage wallpaper;
     private BufferedImage cardBack;
-    private BufferedImage genericCard;
     private BufferedImage nonResizedGenericCard;
     private BufferedImage deckBack;
     private BufferedImage extraDeckBack;
@@ -49,7 +48,6 @@ public class Table {
         }
         try {
             cardBack = resizeImage(cardBack, cardWidth, cardHeight);
-            genericCard = resizeImage(nonResizedGenericCard, cardWidth, cardHeight);
             nonResizedGenericCard = resizeImage(nonResizedGenericCard, 200,(int) (200f/whratio));
             deckBack = resizeImage(deckBack, cardWidth, cardHeight);
             extraDeckBack = resizeImage(extraDeckBack, cardWidth, cardHeight);
@@ -110,6 +108,11 @@ public class Table {
         g.fillRect(centerTableX(tableWidth), centerPlayerTableY(), tableWidth, tableHeight); 
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         g.drawImage(graveyard, playerFieldCardPositions[1][4][0], playerFieldCardPositions[1][4][1], null);
+        if (playerMonsterOnField.size() != 0) {
+            for (int i=0; i<playerMonsterOnField.size(); i++) {
+                playerMonsterOnField.get(i).render(g, CardObject.HANDSIZE);
+            }
+        }
     }
 
     public int[][][] getPlayerFieldCardPositions() {
@@ -122,6 +125,12 @@ public class Table {
 
     public int getCardHeight() {
         return cardHeight;
+    }
+
+    public void summonMonster(CardObject card) {
+        card.setX(playerFieldCardPositions[1][1][0]);
+        card.setY(playerFieldCardPositions[1][1][1]);
+        playerMonsterOnField.add(card);
     }
 
 

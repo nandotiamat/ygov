@@ -11,10 +11,8 @@ public class EffectMonster extends Monster{
 
     public void attack() {}
 
-    public void summon() {}
-
     public void set() {}
 
     public void destroy() {}
-    
+
 }
