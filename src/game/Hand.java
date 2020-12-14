@@ -19,8 +19,6 @@ public class Hand {
             for (int i=0; i < hand.size(); i++) {
                 CardObject card = hand.get(i);
                 card.render(g, CardObject.HANDSIZE);
-                // BufferedImage image = card.getHandImage();
-                // g.drawImage(image, card.getX(), card.getY(), null);
             }
         }
     }
@@ -35,6 +33,13 @@ public class Hand {
             positions.add(new int[] {hand.get(i).getX(), hand.get(i).getY()});
         }
         return positions;
+    }
+
+    public void organizePositions() {
+        for (int i=0; i<hand.size(); i++) {
+            hand.get(i).setX(Game.WIDTH / 2 - 10 -(CardObject.cardWidth / 2) - (hand.size()/2 - (i + 1)) * (CardObject.cardWidth + 10));               
+            hand.get(i).setY(Game.HEIGHT - CardObject.cardHeight - 20);
+        }
     }
 
 }

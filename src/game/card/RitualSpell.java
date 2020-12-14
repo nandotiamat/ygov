@@ -1,6 +1,5 @@
 package src.game.card;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 public class RitualSpell extends Spell {
@@ -12,9 +11,4 @@ public class RitualSpell extends Spell {
     public void destroy() {
     }
 
-    @Override
-    public void renderOptions(Graphics g) {
-        // TODO Auto-generated method stub
-
-    }
 }

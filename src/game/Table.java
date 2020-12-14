@@ -25,7 +25,9 @@ public class Table {
 
     private int[][][] opponentFieldCardPositions = new int[2][5][2];
     private int[][][] playerFieldCardPositions = new int[2][5][2];
+    
     private ArrayList<CardObject> playerMonsterOnField = new ArrayList<CardObject>();
+    private ArrayList<CardObject> playerSpellTrapOnField = new ArrayList<CardObject>();
 
 
     private BufferedImage wallpaper;
@@ -58,9 +60,9 @@ public class Table {
 
         for (int i=0; i<2; i++) {
             for (int j=0; j<5; j++) {
-                opponentFieldCardPositions[i][j][0] = centerTableX(tableWidth) + 5*spaceBetweenCards + 4*cardWidth - (j*spaceBetweenCards + j*cardWidth);
+                opponentFieldCardPositions[i][j][0] = centerTableX() + 5*spaceBetweenCards + 4*cardWidth - (j*spaceBetweenCards + j*cardWidth);
                 opponentFieldCardPositions[i][j][1] = centerOpponentTableY() + (i+1)*spaceBetweenCards + i*cardHeight;
-                playerFieldCardPositions[i][j][0] = centerTableX(tableWidth) + (j+1)*spaceBetweenCards + j*cardWidth;
+                playerFieldCardPositions[i][j][0] = centerTableX() + (j+1)*spaceBetweenCards + j*cardWidth;
                 playerFieldCardPositions[i][j][1] = centerPlayerTableY() + 2*spaceBetweenCards + cardHeight - i*(spaceBetweenCards + cardHeight);
             }
         }
@@ -70,7 +72,6 @@ public class Table {
         g.drawImage(wallpaper, 0, 0, null);
         renderPlayerTable(g);
         //renderOpponentTable(g);
-        if (isDrawable) g.drawImage(nonResizedGenericCard, 100, 50, null);
     }
 
     //DA RIMUOVERE E CREARE UN FILE APPOSITO CON QUESTA FUNZIONE CHE PUÒ SERVIRE UN PO IN GIRO!
@@ -81,8 +82,8 @@ public class Table {
         return outputImage;
     }
 
-    int centerTableX(int width) {
-        return ( Game.WIDTH - width )/2;
+    int centerTableX() {
+        return ( Game.WIDTH - tableWidth )/2;
     }
 
     int centerPlayerTableY() {
@@ -97,7 +98,7 @@ public class Table {
         //opponent table
         Graphics2D g2d = (Graphics2D) g;
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-        g.fillRect(centerTableX(tableWidth), centerOpponentTableY(), tableWidth, tableHeight); 
+        g.fillRect(centerTableX(), centerOpponentTableY(), tableWidth, tableHeight); 
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
     }
 
@@ -105,12 +106,19 @@ public class Table {
         //player table
         Graphics2D g2d = (Graphics2D) g;
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-        g.fillRect(centerTableX(tableWidth), centerPlayerTableY(), tableWidth, tableHeight); 
+        g.fillRect(centerTableX(), centerPlayerTableY(), tableWidth, tableHeight); 
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         g.drawImage(graveyard, playerFieldCardPositions[1][4][0], playerFieldCardPositions[1][4][1], null);
+        // RENDERING PLAYER MONSTER FIELD ZONE
         if (playerMonsterOnField.size() != 0) {
             for (int i=0; i<playerMonsterOnField.size(); i++) {
                 playerMonsterOnField.get(i).render(g, CardObject.HANDSIZE);
+            }
+        }
+        // RENDERING PLAYER SPELL TRAP FIELD ZONE 
+        if (playerSpellTrapOnField.size() != 0) {
+            for (int i=0; i<playerSpellTrapOnField.size(); i++) {
+                playerSpellTrapOnField.get(i).render(g, CardObject.HANDSIZE);
             }
         }
     }
@@ -133,5 +141,26 @@ public class Table {
         playerMonsterOnField.add(card);
     }
 
+    public void setSpellTrap(CardObject card) {
+        card.setX(playerFieldCardPositions[0][1][0]);
+        card.setY(playerFieldCardPositions[0][1][1]);
+        card.setIsCovered(true);
+        playerSpellTrapOnField.add(card);
+    }
 
+    public int getTableWidth() {
+        return tableWidth;
+    }
+
+    public int getTableHeight() {
+        return tableHeight;
+    }
+
+    public ArrayList<CardObject> getPlayerMonsterOnField() {
+        return playerMonsterOnField;
+    }
+
+    public ArrayList<CardObject> getPlayerSpellTrapOnField() {
+        return playerSpellTrapOnField;
+    }
 }

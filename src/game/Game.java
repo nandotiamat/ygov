@@ -8,7 +8,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.Color;
 
 public class Game extends Canvas implements Runnable {
-
+    
     private static final long serialVersionUID = -4716793320140119407L;
     public static final String TITLE = "Yu-Gi-Oh! VANVITELLI EDITION";
     public static final int WIDTH = 1280;
