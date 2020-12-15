@@ -3,25 +3,23 @@ package src.game.card;
 import java.awt.image.BufferedImage;
 
 import src.game.Hand;
+import src.game.Match;
 import src.game.Table;
 
 import java.awt.Graphics;
-import java.awt.Color;
-
 public abstract class Spell extends CardObject{
 
     protected boolean isSettable;
 
-    public Spell(String name, int id, String description, BufferedImage image) {
-        super(name, ATTRIBUTE.Spell, id, description, image);
+    public Spell(String name, int id, String description, BufferedImage image, Match match) {
+        super(name, ATTRIBUTE.Spell, id, description, image, match);
         isSettable = true;
     }
 
     public void renderOptions(Graphics g) {
         if (this.isSelected) {       
-            if (this.isSettable) {
-                g.setColor(Color.red);
-                g.fillRect(this.x + CardObject.cardWidth/2 - 15, this.y - 50, 30, 30);
+            if (this.isSettable && match.getTable().getPlayerSpellTrapOnField().size() < 3 ) {
+                g.drawImage(match.getHUD().tempAsset[match.getHUD().SET], this.x + CardObject.cardWidth/2 - 10, this.y - 30, null);
             }
         }
     }

@@ -1,6 +1,4 @@
 package src.game;
-import src.game.card.*;
-import src.game.player.Player;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -17,19 +15,14 @@ public class Game extends Canvas implements Runnable {
     private Thread thread;
 
     private MainMenu mainMenu;
-    private HUD hud;
-    private Table table;
-    private Player player;
+    public Match match;
 
     private boolean running = false;
 
     public Game() {
         mainMenu = new MainMenu();
-        table = new Table();
-        player = new Player(new Deck(), new Hand(), new Graveyard(), new ExtraDeck(), table);
-        hud = new HUD();
 	    this.addKeyListener(new KeyInput());   //travel è stato qui
-        this.addMouseListener(new Mouse(table, player, this, hud));
+        this.addMouseListener(new Mouse(this));
         new Window(WIDTH, HEIGHT, TITLE, this);
     }
 
@@ -98,9 +91,9 @@ public class Game extends Canvas implements Runnable {
             mainMenu.render(g);
         
         if (gameState == STATE.Match) {
-            table.render(g);
-            player.render(g);
-            hud.render(g);
+            match.getTable().render(g);
+            match.getPlayer().render(g);
+            match.getHUD().render(g);
         }
         
             g.dispose();

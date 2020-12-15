@@ -136,16 +136,60 @@ public class Table {
     }
 
     public void summonMonster(CardObject card) {
-        card.setX(playerFieldCardPositions[1][1][0]);
-        card.setY(playerFieldCardPositions[1][1][1]);
-        playerMonsterOnField.add(card);
+        boolean[] isFree = new boolean[] {true, true, true};
+
+        for (int i=0; i<playerMonsterOnField.size(); i++) {
+            if (playerMonsterOnField.get(i).getX() == playerFieldCardPositions[1][1][0] && playerMonsterOnField.get(i).getY() == playerFieldCardPositions[1][1][1]) {
+                isFree[0] = false;
+            } else if (playerMonsterOnField.get(i).getX() == playerFieldCardPositions[1][2][0] && playerMonsterOnField.get(i).getY() == playerFieldCardPositions[1][2][1]) {
+                isFree[1] = false;
+            } else if (playerMonsterOnField.get(i).getX() == playerFieldCardPositions[1][3][0] && playerMonsterOnField.get(i).getY() == playerFieldCardPositions[1][3][1]) {
+                isFree[2] = false;
+            }
+        }
+        if (isFree[0]) {
+            card.setX(playerFieldCardPositions[1][1][0]);
+            card.setY(playerFieldCardPositions[1][1][1]);
+            playerMonsterOnField.add(card);
+        } else if (isFree[1]) {
+            card.setX(playerFieldCardPositions[1][2][0]);
+            card.setY(playerFieldCardPositions[1][2][1]);
+            playerMonsterOnField.add(card);
+        } else if (isFree[2]) {
+            card.setX(playerFieldCardPositions[1][3][0]);
+            card.setY(playerFieldCardPositions[1][3][1]);
+            playerMonsterOnField.add(card);
+        }
     }
 
     public void setSpellTrap(CardObject card) {
-        card.setX(playerFieldCardPositions[0][1][0]);
-        card.setY(playerFieldCardPositions[0][1][1]);
-        card.setIsCovered(true);
-        playerSpellTrapOnField.add(card);
+        boolean[] isFree = new boolean[] {true, true, true};
+
+        for (int i=0; i<playerSpellTrapOnField.size(); i++) {
+            if (playerSpellTrapOnField.get(i).getX() == playerFieldCardPositions[0][1][0] && playerSpellTrapOnField.get(i).getY() == playerFieldCardPositions[0][1][1]) {
+                isFree[0] = false;
+            } else if (playerSpellTrapOnField.get(i).getX() == playerFieldCardPositions[0][2][0] && playerSpellTrapOnField.get(i).getY() == playerFieldCardPositions[0][2][1]) {
+                isFree[1] = false;
+            } else if (playerSpellTrapOnField.get(i).getX() == playerFieldCardPositions[0][3][0] && playerSpellTrapOnField.get(i).getY() == playerFieldCardPositions[0][3][1]) {
+                isFree[2] = false;
+            }
+        }
+        if (isFree[0]) {
+            card.setX(playerFieldCardPositions[0][1][0]);
+            card.setY(playerFieldCardPositions[0][1][1]);
+            card.setIsCovered(true);
+            playerSpellTrapOnField.add(card);
+        } else if (isFree[1]) {
+            card.setX(playerFieldCardPositions[0][2][0]);
+            card.setY(playerFieldCardPositions[0][2][1]);
+            card.setIsCovered(true);
+            playerSpellTrapOnField.add(card);
+        } else if (isFree[2]) {
+            card.setX(playerFieldCardPositions[0][3][0]);
+            card.setY(playerFieldCardPositions[0][3][1]);
+            card.setIsCovered(true);
+            playerSpellTrapOnField.add(card);
+        }
     }
 
     public int getTableWidth() {

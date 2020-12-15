@@ -8,6 +8,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import src.game.Match;
+
 public abstract class CardObject {
 
     public static final int HANDSIZE = 1;
@@ -22,6 +24,8 @@ public abstract class CardObject {
 
     protected int x;
     protected int y;
+
+    protected Match match;
 
     protected String name;
     protected ATTRIBUTE attribute;
@@ -55,12 +59,13 @@ public abstract class CardObject {
         return outputImage;
     }
 
-    public CardObject(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image) {
+    public CardObject(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image, Match match) {
         this.name = name;
         this.attribute = attribute;
         this.id = id;
         this.description = description;
         this.image = image;
+        this.match = match;
         try {
             handImage = resizeImage(image, cardWidth, cardHeight);
             hudImage = resizeImage(image, cardWidth*3, cardHeight*3);

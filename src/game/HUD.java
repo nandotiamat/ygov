@@ -17,10 +17,14 @@ import java.io.IOException;
 public class HUD {
     private CardObject card;
     private BufferedImage[] assets;
+    public BufferedImage[] tempAsset;
 
     public final int ATK = 9;
     public final int DEF = 10;
     public final int LEVEL = 11;
+
+    public final int NORMALSUMMON = 0;
+    public final int SET = 1;
 
     public final Color effectMonsterColor = new Color(183, 104, 61);
     public final Color normalMonsterColor = new Color(186, 145, 40);
@@ -33,10 +37,15 @@ public class HUD {
         // NEED TO ADD PLAYER!
         card = null;
         assets = new BufferedImage[12];
+        tempAsset = new BufferedImage[2];
         try {
             BufferedImage tmp = ImageIO.read(new File("src/img/assets.png"));
             for (int i = 0; i < 12; i++) {
                 assets[i] = tmp.getSubimage(i * 20, 0, 20, 20);
+            }
+            tmp = ImageIO.read(new File("src/img/tempasset.png"));
+            for (int i = 0; i < 2; i++) {
+                tempAsset[i] = tmp.getSubimage(i * 20, 0, 20, 20);
             }
         } catch (IOException e) {
             System.out.println("errore nel caricamento degli assets.");

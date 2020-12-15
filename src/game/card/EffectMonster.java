@@ -2,10 +2,12 @@ package src.game.card;
 
 import java.awt.image.BufferedImage;
 
+import src.game.Match;
+
 public class EffectMonster extends Monster{
 
-    public EffectMonster(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image, int level, int atk, int def, String type) {
-        super(name, attribute, id, description, image, level, atk, def, type);
+    public EffectMonster(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image, Match match, int level, int atk, int def, String type) {
+        super(name, attribute, id, description, image, match, level, atk, def, type);
         
     }
 

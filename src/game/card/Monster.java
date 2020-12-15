@@ -1,12 +1,12 @@
 package src.game.card;
 
 import src.game.Hand;
+import src.game.Match;
 import src.game.Table;
 
 import java.awt.image.BufferedImage;
 
 import java.awt.Graphics;
-import java.awt.Color;
 
 public abstract class Monster extends CardObject{
 
@@ -16,8 +16,8 @@ public abstract class Monster extends CardObject{
     protected String type;
     protected boolean isNormalSummonable;
 
-    public Monster(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image, int level, int atk, int def, String type) {
-        super(name, attribute, id, description, image);
+    public Monster(String name, ATTRIBUTE attribute, int id, String description, BufferedImage image, Match match, int level, int atk, int def, String type) {
+        super(name, attribute, id, description, image, match);
         this.level = level;
         this.atk = atk;
         this.def = def; 
@@ -36,10 +36,9 @@ public abstract class Monster extends CardObject{
     }
 
     public void renderOptions(Graphics g) {
-        if (this.isSelected) {       
-            if (this.isNormalSummonable) {
-                g.setColor(Color.white);
-                g.fillRect(this.x + CardObject.cardWidth/2 - 15, this.y - 50, 30, 30);
+        if (this.isSelected) {      
+            if (this.isNormalSummonable && match.getTable().getPlayerMonsterOnField().size() < 3 && match.getPlayer().getCanNormalSummon()) {
+                g.drawImage(match.getHUD().tempAsset[match.getHUD().NORMALSUMMON], this.x + CardObject.cardWidth/2 - 10, this.y - 40, null);
             }
         }
     }

@@ -43,7 +43,8 @@ public class Player {
             cards.add(cardDrawed);
 
             if (cards.size() >= 5) {
-                graveyard.getGraveyard().add(cards.remove(0));
+                // graveyard.getGraveyard().add(cards.remove(0));
+                graveyard.add(cards.remove(0));
             }
 
             hand.organizePositions();
@@ -59,6 +60,10 @@ public class Player {
         return hand;
     }
 
+    public ExtraDeck getExtraDeck() {
+        return extraDeck;
+    }
+
     public boolean getCanNormalSummon() {
         return canNormalSummon;
     }
@@ -66,8 +71,8 @@ public class Player {
     public void setCanNormalSummon(boolean bool) {
         canNormalSummon = bool;
     }
-    // public ArrayList<CardObject> getHand() {
-    //     return hand.getHand();
-    // }
     
+    public Graveyard getGraveyard() {
+        return graveyard;
+    }
 }

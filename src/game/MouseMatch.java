@@ -7,6 +7,7 @@ import src.game.card.Trap;
 import src.game.player.Player;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class MouseMatch extends MouseAdapter {
@@ -16,16 +17,25 @@ public class MouseMatch extends MouseAdapter {
     private Game game;
     private HUD hud;
 
-    public MouseMatch(Table table, Player player, Game game, HUD hud) {
-        this.table = table;
-        this.player = player;
+    public MouseMatch(Match match, Game game) {
+        this.table = match.getTable();
+        this.player = match.getPlayer();
+        this.hud = match.getHUD();
         this.game = game;
-        this.hud = hud;
     }
 
     public boolean inRectangle(MouseEvent e, int x, int y, int width, int height) {
         if (e.getX() > x && e.getX() < x + width) {
             if (e.getY() > y && e.getY() < y + height) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean inRectangle(MouseEvent e, Rectangle rectangle) {
+        if (e.getX() > rectangle.x && e.getX() < rectangle.x + rectangle.width) {
+            if (e.getY() > rectangle.y && e.getY() < rectangle.y + rectangle.height) {
                 return true;
             }
         }
@@ -50,6 +60,20 @@ public class MouseMatch extends MouseAdapter {
             // Table
             if (inRectangle(e, table.centerTableX(), table.centerPlayerTableY(), table.getTableWidth(), table.getTableHeight())) {
                 System.out.println("AYO! you are clicking the table :D");
+
+                // CHECKING GRAVEYARD
+                if (inRectangle(e, player.getGraveyard().getX(), player.getGraveyard().getY(), CardObject.cardWidth, CardObject.cardHeight)) {
+                    player.getGraveyard().setIsSelected(true);
+                } else if (player.getGraveyard().getIsSelected()) {
+                    player.getGraveyard().setIsSelected(false);
+                }
+
+                // CHECKING EXTRADECK
+                if (inRectangle(e, player.getExtraDeck().getListRectangle())) {
+                    player.getExtraDeck().setIsSelected(true);
+                } else if (player.getExtraDeck().getIsSelected() && !inRectangle(e, player.getExtraDeck().getX() + CardObject.cardWidth/2 - 15, player.getExtraDeck().getY() - 50, 30, 30)) {
+                    player.getExtraDeck().setIsSelected(false);
+                }
 
                 // CHECKING MONSTERS
                 if (table.getPlayerMonsterOnField().size() > 0) {
@@ -105,6 +129,32 @@ public class MouseMatch extends MouseAdapter {
                 }
             }
 
+            // Graveyard Interaction 
+
+            if (player.getGraveyard().getIsSelected()) {
+                if (inRectangle(e, player.getGraveyard().getX() + CardObject.cardWidth/2 - 15, player.getGraveyard().getY() - 50, 30, 30)) {
+                    player.getGraveyard().setCanRenderList(true);
+                } else if (!inRectangle(e, player.getGraveyard().getX(), player.getGraveyard().getY(), CardObject.cardWidth, CardObject.cardHeight)) {
+                    player.getGraveyard().setIsSelected(false);
+                } 
+            } else if (player.getGraveyard().getCanRenderList()) {
+                if (!inRectangle(e, player.getGraveyard().getListRectangle())) {
+                    player.getGraveyard().setCanRenderList(false);
+                }
+            }
+
+            if (player.getExtraDeck().getIsSelected()) { 
+                if (inRectangle(e, player.getExtraDeck().getListRectangle().x + CardObject.cardWidth/2 - 15, player.getExtraDeck().getListRectangle().y - 50, 30, 30)) {
+                    System.out.println("on god");
+                    player.getExtraDeck().setCanRenderList(true);
+                } else if (!inRectangle(e, player.getExtraDeck().getX(), player.getExtraDeck().getY(), CardObject.cardWidth, CardObject.cardHeight)) {
+                    player.getExtraDeck().setIsSelected(false);
+                }
+            } else if (player.getExtraDeck().getCanRenderList()) {
+                if (!inRectangle(e, player.getExtraDeck().getListRectangle())) {
+                    player.getExtraDeck().setCanRenderList(false);
+                }
+            }
             
             //Check if selected HUD card has actions that can be executed like summon, set etc...
             if (hud.getCard() != null) {

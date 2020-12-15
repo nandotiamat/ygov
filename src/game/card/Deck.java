@@ -17,12 +17,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import src.game.Match;
+
 public class Deck {
 
     private ArrayList<CardObject> deck;
+    private Match match;
     private BufferedImage backCard;
 
-    public Deck() {
+    public Deck(Match match) {
+        this.match = match;
         deck = parseDeck();
         for (int i = 0; i < 5; i++) {
             Collections.shuffle(deck);
@@ -110,33 +114,33 @@ public class Deck {
 
             if (cardType.equals("Monster")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new NormalMonster(name, attribute, index, description, image, level, atk, def, type));
+                    deck.add(new NormalMonster(name, attribute, index, description, image, match, level, atk, def, type));
                 }
             } else if (cardType.equals("Effect")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new EffectMonster(name, attribute, index, description, image, level, atk, def, type));
+                    deck.add(new EffectMonster(name, attribute, index, description, image, match, level, atk, def, type));
                 }
             } else if (cardType.equals("Ritual")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new RitualMonster(name, attribute, index, description, image, level, atk, def, type));
+                    deck.add(new RitualMonster(name, attribute, index, description, image, match, level, atk, def, type));
                 }
             } else if (cardType.equals("Spell")) {
                 if (((String) cardParsed.get("trapmagictype")).equals("Ritual")) {
                     for (int i = 0; i < (long) element.get("quantity"); i++) {
-                        deck.add(new NormalSpell(name, index, description, image));
+                        deck.add(new NormalSpell(name, index, description, image, match));
                     }
                 } else if (((String) cardParsed.get("trapmagictype")).equals("Quick-Play")) {
                     for (int i = 0; i < (long) element.get("quantity"); i++) {
-                        deck.add(new QuickPlaySpell(name, index, description, image));
+                        deck.add(new QuickPlaySpell(name, index, description, image, match));
                     }
                 } else if (((String) cardParsed.get("trapmagictype")).equals("None")) {
                     for (int i = 0; i < (long) element.get("quantity"); i++) {
-                        deck.add(new NormalSpell(name, index, description, image));
+                        deck.add(new NormalSpell(name, index, description, image, match));
                     }
                 }
             } else if (cardType.equals("Trap")) {
                 for (int i = 0; i < (long) element.get("quantity"); i++) {
-                    deck.add(new Trap(name, index, description, image));
+                    deck.add(new Trap(name, index, description, image, match));
                 }
             }
         }
