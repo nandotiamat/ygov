@@ -58,6 +58,7 @@ public class MouseMatch extends MouseAdapter {
             // Flag per capire se ho settato una carta all hud dal tavolo
             boolean flag = false;
             // Table
+
             if (inRectangle(e, table.centerTableX(), table.centerPlayerTableY(), table.getTableWidth(), table.getTableHeight())) {
                 System.out.println("AYO! you are clicking the table :D");
 
@@ -69,7 +70,7 @@ public class MouseMatch extends MouseAdapter {
                 }
 
                 // CHECKING EXTRADECK
-                if (inRectangle(e, player.getExtraDeck().getListRectangle())) {
+                if (inRectangle(e, player.getExtraDeck().getX(), player.getExtraDeck().getY(), CardObject.cardWidth, CardObject.cardHeight)) {
                     player.getExtraDeck().setIsSelected(true);
                 } else if (player.getExtraDeck().getIsSelected() && !inRectangle(e, player.getExtraDeck().getX() + CardObject.cardWidth/2 - 15, player.getExtraDeck().getY() - 50, 30, 30)) {
                     player.getExtraDeck().setIsSelected(false);
@@ -134,25 +135,52 @@ public class MouseMatch extends MouseAdapter {
             if (player.getGraveyard().getIsSelected()) {
                 if (inRectangle(e, player.getGraveyard().getX() + CardObject.cardWidth/2 - 15, player.getGraveyard().getY() - 50, 30, 30)) {
                     player.getGraveyard().setCanRenderList(true);
+                    player.getGraveyard().setIsSelected(false);
+
                 } else if (!inRectangle(e, player.getGraveyard().getX(), player.getGraveyard().getY(), CardObject.cardWidth, CardObject.cardHeight)) {
                     player.getGraveyard().setIsSelected(false);
                 } 
             } else if (player.getGraveyard().getCanRenderList()) {
                 if (!inRectangle(e, player.getGraveyard().getListRectangle())) {
                     player.getGraveyard().setCanRenderList(false);
+                } else {
+                    int i = inHand(e.getX(), e.getY(), player.getGraveyard().getCardPositions());
+                    if (i != -1) {
+                        CardObject selectedCard = player.getGraveyard().getGraveyard().get(i);
+                        if (hud.getCard() != selectedCard || hud.getCard() == null) {
+                            if (hud.getCard() != null)
+                                hud.getCard().setIsSelected(false);
+                            hud.setCard(selectedCard);
+                            selectedCard.setIsSelected(true);
+                            flag = true;
+                        } 
+
+                    }
                 }
             }
 
             if (player.getExtraDeck().getIsSelected()) { 
-                if (inRectangle(e, player.getExtraDeck().getListRectangle().x + CardObject.cardWidth/2 - 15, player.getExtraDeck().getListRectangle().y - 50, 30, 30)) {
-                    System.out.println("on god");
+                if (inRectangle(e, player.getExtraDeck().getX() + CardObject.cardWidth/2 - 15, player.getExtraDeck().getY()- 50, 30, 30)) {
                     player.getExtraDeck().setCanRenderList(true);
+                    player.getExtraDeck().setIsSelected(false);
                 } else if (!inRectangle(e, player.getExtraDeck().getX(), player.getExtraDeck().getY(), CardObject.cardWidth, CardObject.cardHeight)) {
                     player.getExtraDeck().setIsSelected(false);
                 }
             } else if (player.getExtraDeck().getCanRenderList()) {
                 if (!inRectangle(e, player.getExtraDeck().getListRectangle())) {
                     player.getExtraDeck().setCanRenderList(false);
+                } else {
+                    int i = inHand(e.getX(), e.getY(), player.getExtraDeck().getCardPositions());
+                    if (i != -1) {
+                        CardObject selectedCard = player.getExtraDeck().getExtraDeck().get(i);
+                        if (hud.getCard() != selectedCard || hud.getCard() == null) {
+                            if (hud.getCard() != null)
+                                hud.getCard().setIsSelected(false);
+                            hud.setCard(selectedCard);
+                            selectedCard.setIsSelected(true);
+                            flag = true;
+                        } 
+                    }
                 }
             }
             
@@ -180,15 +208,25 @@ public class MouseMatch extends MouseAdapter {
                 }
                 else if (hud.getCard() instanceof Monster) {
                     Monster card = (Monster) hud.getCard();
-                    if (card.getIsNormalSummonable()){
-                        if (e.getX() > card.getX() + CardObject.cardWidth/2 - 15 && e.getX() < card.getX() + CardObject.cardWidth/2 + 15){
-                            if (e.getY() > card.getY() - 50 && e.getY() <  card.getY() - 20) {
-                                if (player.getCanNormalSummon()) {
-                                    card.normalSummon(player.getHand(), table);
-                                    player.setCanNormalSummon(false);
-                                }
-                            }
-                        } 
+                    if (card.getIsNormalSummonable() && player.getCanNormalSummon()){
+                        if (inRectangle(e, card.getNormalSummonButtonRect())) {
+                            card.normalSummon(player.getHand(), table);
+                            player.setCanNormalSummon(false);
+                        }
+                        // if (e.getX() > card.getX() + CardObject.cardWidth/2 - 15 && e.getX() < card.getX() + CardObject.cardWidth/2 + 15){
+                        //     if (e.getY() > card.getY() - 50 && e.getY() <  card.getY() - 20) {
+                        //         if (player.getCanNormalSummon()) {
+                        //             card.normalSummon(player.getHand(), table);
+                        //             player.setCanNormalSummon(false);
+                        //         }
+                        //     }
+                        // } 
+                    }
+                    if (card.getIsSettable() && player.getCanNormalSummon()) {
+                        if (inRectangle(e, card.getSetButtonRect())) {
+                            card.set();
+                            player.setCanNormalSummon(false);
+                        }
                     }
                 }
             }

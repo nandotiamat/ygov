@@ -1,6 +1,9 @@
 package src.game;
 
 import src.game.card.CardObject;
+import src.game.card.Monster;
+import src.game.card.Spell;
+import src.game.card.Trap;
 
 import java.util.ArrayList;
 import java.awt.Color;
@@ -9,6 +12,7 @@ import java.awt.Font;
 import java.awt.Rectangle;
 
 public class Graveyard {
+    private Match match;
     private ArrayList<CardObject> graveyard;
     private boolean isSelected; 
     private boolean canRenderList;
@@ -20,22 +24,22 @@ public class Graveyard {
     private int height;
     private Rectangle listRectangle;
 
-    public Graveyard (int[] position) {
+    public Graveyard (Match match) {
         graveyard = new ArrayList<CardObject>();
         isSelected = false;
         canRenderList = false;
-        x = position[0];
-        y = position[1];
+        x = match.getTable().getPlayerFieldCardPositions()[1][4][0];
+        y = match.getTable().getPlayerFieldCardPositions()[1][4][1];
     }
 
-    public void render(Graphics g, int[] pos) {
+    public void render(Graphics g) {
         if (graveyard.size() > 0) {
             CardObject topCard = graveyard.get(graveyard.size() - 1);
-            g.drawImage(topCard.getHandImage(), pos[0], pos[1], null);
+            g.drawImage(topCard.getHandImage(), x, y, null);
             g.setColor(Color.white);
             Font tmp = g.getFont();
             g.setFont(new Font("Arial", 1, 30));
-            g.drawString(Integer.toString(graveyard.size()), pos[0] + 20, pos[1] + 40);
+            g.drawString(Integer.toString(graveyard.size()), x + 20, y + 40);
             g.setFont(tmp);
             renderOption(g);
             if (canRenderList) {
@@ -68,6 +72,18 @@ public class Graveyard {
     // DA RIVISITARE!
     public void add (CardObject card) {
         graveyard.add(card);
+
+        if (card instanceof Monster) {
+            Monster monster = (Monster) card; 
+            monster.setIsNormalSummonable(false);
+        } else if (card instanceof Spell) {
+            Spell spell = (Spell) card;
+            spell.setIsSettable(false);
+        } else if (card instanceof Trap) {
+            Trap trap = (Trap) card;
+            trap.setIsSettable(false);
+        }
+
         row = (graveyard.size() / 6) + 1;
         height = row*(CardObject.cardHeight + 10) + 10;
         if (graveyard.size() <= 6) {
@@ -110,4 +126,11 @@ public class Graveyard {
         return listRectangle;
     }
     
+    public ArrayList<int[]> getCardPositions() {
+        ArrayList<int[]> list = new ArrayList<int[]>();
+        for (int i = 0; i < graveyard.size(); i++) {
+            list.add(new int[] {graveyard.get(i).getX(), graveyard.get(i).getY()});
+        }
+        return list;
+    }
 }

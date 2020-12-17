@@ -25,9 +25,14 @@ public class Deck {
     private Match match;
     private BufferedImage backCard;
 
-    public Deck(Match match) {
+    private int x;
+    private int y;
+
+    public Deck(Match match, String deckName) {
         this.match = match;
-        deck = parseDeck();
+        x = match.getTable().getPlayerFieldCardPositions()[0][4][0];
+        y = match.getTable().getPlayerFieldCardPositions()[0][4][1];
+        deck = parseDeck(deckName);
         for (int i = 0; i < 5; i++) {
             Collections.shuffle(deck);
         }
@@ -40,11 +45,11 @@ public class Deck {
         }
     }
 
-    public void render(Graphics g, int[] pos) {
+    public void render(Graphics g) {
         if (deck.size() > 0) {
-            g.drawImage(backCard, pos[0], pos[1], null); 
+            g.drawImage(backCard, x, y, null); 
             g.setColor(Color.white);
-            g.drawString(Integer.toString(deck.size()), pos[0] + 20, pos[1] + 40);
+            g.drawString(Integer.toString(deck.size()), x + 20, y + 40);
         }
     }
 
@@ -57,7 +62,7 @@ public class Deck {
         return outputImage;
     }
 
-    private ArrayList<CardObject> parseDeck() {
+    private ArrayList<CardObject> parseDeck(String deckName) {
         ArrayList<CardObject> deck = new ArrayList<CardObject>();
         JSONParser parser = new JSONParser();
         JSONArray database = null;
@@ -65,7 +70,7 @@ public class Deck {
 
         try {
             database = (JSONArray) parser.parse(new FileReader("src/game/list.json"));
-            deckDb = (JSONArray) parser.parse(new FileReader("src/game/bellinideck.json"));
+            deckDb = (JSONArray) parser.parse(new FileReader("src/game/" + deckName));
             deckDb = (JSONArray) deckDb.get(0);
         } catch (FileNotFoundException e) {
             System.out.println("JSON file not found.");

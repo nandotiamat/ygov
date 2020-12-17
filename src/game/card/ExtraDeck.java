@@ -31,15 +31,17 @@ public class ExtraDeck {
 
     private int x;
     private int y;
+    private int width;
+    private int height;
     private Rectangle listRectangle;
 
-    public ExtraDeck(Match match, int[] pos) {
+    public ExtraDeck(Match match, String deckName) {
         this.match = match;
-        x = pos[0];
-        y = pos[1];
+        x = match.getTable().getPlayerFieldCardPositions()[0][0][0];
+        y = match.getTable().getPlayerFieldCardPositions()[0][0][1];
         isSelected = false;
         canRenderList = false;
-        deck = getDeck();
+        deck = getDeck(deckName);
         try {
             backCard = ImageIO.read(new File("src/img/cardBack.png"));
             backCard = resizeImage(backCard, CardObject.cardWidth, CardObject.cardHeight);
@@ -47,7 +49,9 @@ public class ExtraDeck {
         } catch (IOException e) {
             System.out.println("Error. Couldn't load back image of Deck class.");
         }
-        listRectangle = new Rectangle(x, y, 10 + deck.size()*(CardObject.cardWidth + 10), 20 + CardObject.cardHeight);
+        width = 10 + deck.size() * (CardObject.cardWidth + 10);
+        height = 20 + CardObject.cardHeight;
+        listRectangle = new Rectangle((Game.WIDTH - width) / 2, (Game.HEIGHT - height) / 2, width, height);
         organizeCardPositions();
     }
         
@@ -60,14 +64,14 @@ public class ExtraDeck {
         return outputImage;
     }
 
-    public void render(Graphics g, int[] pos) {
-        g.drawImage(backCard, pos[0], pos[1], null);
+    public void render(Graphics g) {
+        g.drawImage(backCard, x, y, null);
         g.setColor(Color.white);
-        g.drawString(Integer.toString(deck.size()), pos[0] + 20, pos[1] + 40);
+        g.drawString(Integer.toString(deck.size()), x + 20, y + 40);
         renderOptions(g);
         if (canRenderList) {
             g.setColor(Color.white);
-            g.fillRect((Game.WIDTH - listRectangle.width)/2, (Game.HEIGHT - listRectangle.height)/2, listRectangle.width, listRectangle.height);
+            g.fillRect(listRectangle.x, listRectangle.y, listRectangle.width, listRectangle.height);
             for (int i=0; i<deck.size(); i++) {
                 deck.get(i).render(g, CardObject.HANDSIZE);
             }
@@ -91,7 +95,7 @@ public class ExtraDeck {
         }
     }
 
-    private ArrayList<CardObject> getDeck() {
+    private ArrayList<CardObject> getDeck(String deckName) {
         ArrayList<CardObject> deck = new ArrayList<CardObject>();
         JSONParser parser = new JSONParser();
         JSONArray database = null;
@@ -100,7 +104,7 @@ public class ExtraDeck {
         try {
             // sistemare file json
             database = (JSONArray) parser.parse(new FileReader("src/game/list.json"));
-            deckDb = (JSONArray) parser.parse(new FileReader("src/game/bellinideck.json"));
+            deckDb = (JSONArray) parser.parse(new FileReader("src/game/" + deckName));
             deckDb = (JSONArray) deckDb.get(1);
         } catch (FileNotFoundException e) {
             System.out.println("JSON file not found.");
@@ -144,10 +148,22 @@ public class ExtraDeck {
         return deck;
     }
 
+    public ArrayList<CardObject> getExtraDeck() {
+        return deck;
+    }
+
     public void printDeck() {
         for (int i = 0; i < deck.size(); i++) {
             System.out.println(deck.get(i).name);
         }
+    }
+
+    public ArrayList<int[]> getCardPositions() {
+        ArrayList<int[]> list = new ArrayList<int[]>();
+        for (int i = 0; i < deck.size(); i++) {
+            list.add(new int[] {deck.get(i).getX(), deck.get(i).getY()});
+        }
+        return list;
     }
 
     public Rectangle getListRectangle() {

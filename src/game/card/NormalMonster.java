@@ -18,10 +18,6 @@ public class NormalMonster extends Monster {
 
     public void summon() {
     }
-
-    public void set() {
-    }
-
     public void destroy() {
     }
     

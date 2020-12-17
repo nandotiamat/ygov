@@ -1,0 +1,7 @@
+{
+    "Bellini" : {
+        "image" : "Bellini.png",
+        "name" : "Boh...", 
+        "deck" : "bellinideck.json"
+    }
+}

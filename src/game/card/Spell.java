@@ -34,4 +34,8 @@ public abstract class Spell extends CardObject{
     public boolean getIsSettable() {
         return isSettable;
     }
+
+    public void setIsSettable(boolean bool) {
+        isSettable = bool;
+    }
 }
