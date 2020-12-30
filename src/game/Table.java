@@ -1,5 +1,6 @@
 package src.game;
 
+import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,7 @@ import javax.imageio.ImageIO;
 
 public class Table {
 
+    private Match match;
     public boolean isDrawable = false; 
 
     private float whratio = 0.68688f;
@@ -27,6 +29,7 @@ public class Table {
 
     private int[][][] opponentFieldCardPositions = new int[2][5][2];
     private int[][][] playerFieldCardPositions = new int[2][5][2];
+    private Rectangle[] phasesRect;
     
     private ArrayList<CardObject> playerMonsterOnField = new ArrayList<CardObject>();
     private ArrayList<CardObject> playerSpellTrapOnField = new ArrayList<CardObject>();
@@ -38,8 +41,13 @@ public class Table {
     private BufferedImage deckBack;
     private BufferedImage extraDeckBack;
     private BufferedImage graveyard;
+    private static BufferedImage[] phases;
+    private static BufferedImage[] activePhases;
 
-    public Table() { 
+    public Table(Match match) { 
+        this.match = match;
+        phases = new BufferedImage[6];
+        activePhases = new BufferedImage[6];
         System.out.println("table width: " + tableWidth);
         System.out.println("phase width: " + tableWidth / 6);
         try {
@@ -49,9 +57,17 @@ public class Table {
             deckBack = ImageIO.read(new File("src/img/deckBack.png"));
             extraDeckBack = ImageIO.read(new File("src/img/extraDeckBack.png"));
             graveyard = ImageIO.read(new File("src/img/graveyard.png"));
+            
+            BufferedImage tmp = ImageIO.read(new File("src/img/phases.png"));
+            for (int i=0; i<6; i++) {
+                phases[i] = tmp.getSubimage(78*i, 0, 78, 38);
+                activePhases[i] = tmp.getSubimage(78*i, 38, 78, 38);
+            }
+        
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         try {
             cardBack = resizeImage(cardBack, cardWidth, cardHeight);
             nonResizedGenericCard = resizeImage(nonResizedGenericCard, 200,(int) (200f/whratio));
@@ -72,10 +88,23 @@ public class Table {
                 playerFieldCardPositions[i][j][1] = playerFieldCardPositions[i][0][1];
             }
         }
+
+        //Phases Rectangles
+        phasesRect = new Rectangle[6];
+        for(int i = 0; i < 6; i++) {
+            phasesRect[i] = new Rectangle(centerTableX() + 78*i, centerPlayerTableY() - 38, 78, 38);
+        }
     }
 
     public void render(Graphics g) {
         g.drawImage(wallpaper, 0, 0, null);
+        
+        for (int i=0; i<6; i++) {
+            if (match.getPhase().ordinal() == i) {
+                g.drawImage(activePhases[i], centerTableX() + 78*i, centerPlayerTableY() - 38, null);
+            } else 
+                g.drawImage(phases[i], centerTableX() + 78*i, centerPlayerTableY() - 38, null);
+        }
         renderPlayerTable(g);
         //renderOpponentTable(g);
     }
@@ -133,6 +162,10 @@ public class Table {
         return playerFieldCardPositions;
     }
 
+    public Rectangle[] getPhasesRect() {
+        return phasesRect;
+    }
+
     public int getCardWidth() {
         return cardWidth;
     }
@@ -157,12 +190,23 @@ public class Table {
         }
 
         for (int i=0; i<playerMonsterOnField.size(); i++) {
-            if (playerMonsterOnField.get(i).getX() == playerFieldCardPositions[1][1][0] && playerMonsterOnField.get(i).getY() == playerFieldCardPositions[1][1][1]) {
-                isFree[0] = false;
-            } else if (playerMonsterOnField.get(i).getX() == playerFieldCardPositions[1][2][0] && playerMonsterOnField.get(i).getY() == playerFieldCardPositions[1][2][1]) {
-                isFree[1] = false;
-            } else if (playerMonsterOnField.get(i).getX() == playerFieldCardPositions[1][3][0] && playerMonsterOnField.get(i).getY() == playerFieldCardPositions[1][3][1]) {
-                isFree[2] = false;
+            Monster monster = (Monster) playerMonsterOnField.get(i);
+            if (monster.getIsDefensePosition()) {
+                if (monster.getX() == playerFieldCardPositions[1][1][0] - diffX && monster.getY() == playerFieldCardPositions[1][1][1] + diffY) {
+                    isFree[0] = false;
+                } else if (monster.getX() == playerFieldCardPositions[1][2][0] - diffX && monster.getY() == playerFieldCardPositions[1][2][1] + diffY ) {
+                    isFree[1] = false;
+                } else if (monster.getX() == playerFieldCardPositions[1][3][0] - diffX && monster.getY() == playerFieldCardPositions[1][3][1] + diffY ) {
+                    isFree[2] = false;
+                }
+            } else {
+                if (monster.getX() == playerFieldCardPositions[1][1][0] && monster.getY() == playerFieldCardPositions[1][1][1]) {
+                    isFree[0] = false;
+                } else if (monster.getX() == playerFieldCardPositions[1][2][0] && monster.getY() == playerFieldCardPositions[1][2][1]) {
+                    isFree[1] = false;
+                } else if (monster.getX() == playerFieldCardPositions[1][3][0] && monster.getY() == playerFieldCardPositions[1][3][1]) {
+                    isFree[2] = false;
+                }
             }
         }
         if (isFree[0]) {

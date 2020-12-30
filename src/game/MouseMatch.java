@@ -12,12 +12,14 @@ import java.util.ArrayList;
 
 public class MouseMatch extends MouseAdapter {
 
+    private Match match;
     private Table table;
     private Player player;
     private Game game;
     private HUD hud;
 
     public MouseMatch(Match match, Game game) {
+        this.match = match;
         this.table = match.getTable();
         this.player = match.getPlayer();
         this.hud = match.getHUD();
@@ -130,7 +132,7 @@ public class MouseMatch extends MouseAdapter {
                 if (inRectangle(e, player.getGraveyard().getX() + CardObject.cardWidth/2 - 15, player.getGraveyard().getY() - 50, 30, 30)) {
                     player.getGraveyard().setCanRenderList(true);
                     player.getGraveyard().setIsSelected(false);
-
+                    flag = true;
                 } else if (!inRectangle(e, player.getGraveyard().getX(), player.getGraveyard().getY(), CardObject.cardWidth, CardObject.cardHeight)) {
                     player.getGraveyard().setIsSelected(false);
                 } 
@@ -232,10 +234,17 @@ public class MouseMatch extends MouseAdapter {
             }
 
             
-        if (hud.getCard() != null && !flag){
-            hud.getCard().setIsSelected(false);
-            hud.setCard(null);
-        }
+            if (hud.getCard() != null && !flag){
+                hud.getCard().setIsSelected(false);
+                hud.setCard(null);
+            }
+
+            if (inRectangle(e, table.getPhasesRect()[0].x, table.getPhasesRect()[0].y, table.getTableWidth(), 38) && !flag) {
+                System.out.println(	"STAI PREMENDO SULLE FASIU");
+                if (inRectangle(e, table.getPhasesRect()[5])) {
+                    match.setPhase(PHASES.EndPhase);
+                }
+            }
         }
     }
 }

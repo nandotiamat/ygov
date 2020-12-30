@@ -23,6 +23,7 @@ public class HUD {
     private CardObject card;
     private static BufferedImage[] assets;
     public static BufferedImage[] tempAsset;
+
     public final int ATK = 9;
     public final int DEF = 10;
     public final int LEVEL = 11;
@@ -45,11 +46,14 @@ public class HUD {
     static {
         assets = new BufferedImage[12];
         tempAsset = new BufferedImage[3];
+
         try {
+            // assets.png
             BufferedImage tmp = ImageIO.read(new File("src/img/assets.png"));
             for (int i = 0; i < 12; i++) {
                 assets[i] = tmp.getSubimage(i * 20, 0, 20, 20);
             }
+            // tempassets.png
             tmp = ImageIO.read(new File("src/img/tempasset.png"));
             for (int i = 0; i < 3; i++) {
                 tempAsset[i] = tmp.getSubimage(i * 20, 0, 20, 20);
@@ -70,6 +74,7 @@ public class HUD {
     }
 
     public void render(Graphics g) {
+        //card
         if (card != null) {
             Graphics2D g2d = (Graphics2D) g;
             g.drawImage(card.getHUDImage(), 100, 50, null);
@@ -151,8 +156,7 @@ public class HUD {
             g.setColor(Color.white);
             for (int i = 0; i < descriptionList.size(); i++) {
                 g.drawString(descriptionList.get(i), cardHudRectangle.x, cardHudRectangle.y + 40 + 40 + (i + 1) * 20);
-            }
-            
+            }            
         }
 
         // PLAYER HUD

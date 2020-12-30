@@ -82,6 +82,10 @@ public class Graveyard {
         if (card instanceof Monster) {
             Monster monster = (Monster) card; 
             monster.setIsNormalSummonable(false);
+            monster.setIsSettable(false);
+            monster.setIsDefensePosition(false);
+            monster.setIsCovered(false);
+            
         } else if (card instanceof Spell) {
             Spell spell = (Spell) card;
             spell.setIsSettable(false);

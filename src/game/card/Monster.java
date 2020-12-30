@@ -97,6 +97,7 @@ public abstract class Monster extends CardObject{
         hand.getHand().remove(this); 
         hand.organizePositions();
         isNormalSummonable = false;
+        isSettable = false;
         table.summonMonster(this);
     }    
 
@@ -120,6 +121,7 @@ public abstract class Monster extends CardObject{
         hand.getHand().remove(this);
         hand.organizePositions();
         isNormalSummonable = false;
+        isSettable = false;
         isCovered = true;
         isDefensePosition = true;
         match.getTable().summonMonster(this);

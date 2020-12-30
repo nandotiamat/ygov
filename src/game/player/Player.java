@@ -3,6 +3,7 @@ package src.game.player;
 import src.game.card.CardObject;
 import src.game.card.Deck;
 import src.game.card.ExtraDeck;
+import src.game.card.Monster;
 import src.game.Graveyard;
 import src.game.Hand;
 import src.game.Match;
@@ -72,7 +73,7 @@ public class Player {
         hand = new Hand();
         graveyard = new Graveyard(match);
         extraDeck = new ExtraDeck(match, databaseName);
-        table = new Table();
+        table = match.getTable();
         lifePoints = 4000;
         canNormalSummon = true;
     }
@@ -96,6 +97,15 @@ public class Player {
             }
 
             hand.organizePositions();
+        }
+    }
+
+    public void resetForBeginTurn() {
+        canNormalSummon = true;
+        ArrayList<CardObject> monsters = table.getPlayerMonsterOnField();
+        for (int i=0; i<monsters.size(); i++) {
+            Monster monster = (Monster) monsters.get(i);
+            monster.setCanChangePosition(true);
         }
     }
 
