@@ -21,16 +21,15 @@ public class HUD {
     private Player player;
 
     private CardObject card;
-    private BufferedImage[] assets;
-    public BufferedImage[] tempAsset;
-
+    private static BufferedImage[] assets;
+    public static BufferedImage[] tempAsset;
     public final int ATK = 9;
     public final int DEF = 10;
     public final int LEVEL = 11;
 
     public final int NORMALSUMMON = 0;
     public final int SET = 1;
-    public final int LENS = 2;
+    public static final int LENS;
 
     public final Color effectMonsterColor = new Color(183, 104, 61);
     public final Color normalMonsterColor = new Color(186, 145, 40);
@@ -41,11 +40,9 @@ public class HUD {
 
     private final int playerImageX;
     private final int playerImageY;
-    private final Rectangle cardHudRectangle; 
-
-    public HUD(Match match) {
-        player = match.getPlayer();
-        card = null;
+    private final Rectangle cardHudRectangle;
+    
+    static {
         assets = new BufferedImage[12];
         tempAsset = new BufferedImage[3];
         try {
@@ -59,8 +56,14 @@ public class HUD {
             }
         } catch (IOException e) {
             System.out.println("errore nel caricamento degli assets.");
-        }
+        }       
 
+        LENS = 2;
+    }
+
+    public HUD(Match match) {
+        player = match.getPlayer();
+        card = null;
         cardHudRectangle = new Rectangle(100, 50 + CardObject.cardHeight * 3 + 10, CardObject.cardWidth * 3, 275);
         playerImageX = 20;
         playerImageY = cardHudRectangle.y + cardHudRectangle.height + 19 + 5;

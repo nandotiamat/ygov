@@ -2,10 +2,12 @@ package src.game.card;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 
 import src.game.Hand;
 import src.game.Match;
 import src.game.Table;
+import src.game.HUD;
 
 public class Trap extends CardObject {
 
@@ -29,9 +31,13 @@ public class Trap extends CardObject {
     public void renderOptions(Graphics g) {
         if (this.isSelected) {       
             if (this.isSettable && match.getTable().getPlayerSpellTrapOnField().size() < 3) {
-                g.drawImage(match.getHUD().tempAsset[match.getHUD().SET], x + CardObject.cardWidth/2 - 10, y - 30, null);
+                g.drawImage(HUD.tempAsset[match.getHUD().SET], x, y - 40, null);
             }
         }
+    }
+
+    public Rectangle getSetButtonRect() {
+        return new Rectangle(x, y - 40, 20, 20);
     }
 
     public boolean getIsSettable() {

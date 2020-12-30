@@ -1,5 +1,7 @@
 package src.game;
 
+
+import src.game.HUD;
 import src.game.card.CardObject;
 import src.game.card.Monster;
 import src.game.card.Spell;
@@ -10,6 +12,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public class Graveyard {
     private Match match;
@@ -23,6 +26,7 @@ public class Graveyard {
     private int width;
     private int height;
     private Rectangle listRectangle;
+    private BufferedImage image;
 
     public Graveyard (Match match) {
         graveyard = new ArrayList<CardObject>();
@@ -30,6 +34,7 @@ public class Graveyard {
         canRenderList = false;
         x = match.getTable().getPlayerFieldCardPositions()[1][4][0];
         y = match.getTable().getPlayerFieldCardPositions()[1][4][1];
+        image = HUD.tempAsset[HUD.LENS];
     }
 
     public void render(Graphics g) {
@@ -54,8 +59,9 @@ public class Graveyard {
 
     public void renderOption(Graphics g) {
         if (isSelected) {
-            g.setColor(Color.red);
-            g.fillRect(x + CardObject.cardWidth/2 - 15, y - 50, 30, 30);
+            g.drawImage(image, x + CardObject.cardWidth/2 - 15, y - 50, null);
+            // g.setColor(Color.red);
+            // g.fillRect(x + CardObject.cardWidth/2 - 15, y - 50, 30, 30);
         }
     }
 

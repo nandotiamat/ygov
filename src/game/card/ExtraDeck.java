@@ -18,6 +18,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import src.game.Game;
+import src.game.HUD;
 import src.game.Match;
 
 public class ExtraDeck {
@@ -25,6 +26,7 @@ public class ExtraDeck {
     private ArrayList<CardObject> deck;
     private Match match;
     private BufferedImage backCard;
+    private BufferedImage lensImage;
 
     private boolean isSelected;
     private boolean canRenderList;
@@ -53,6 +55,7 @@ public class ExtraDeck {
         height = 20 + CardObject.cardHeight;
         listRectangle = new Rectangle((Game.WIDTH - width) / 2, (Game.HEIGHT - height) / 2, width, height);
         organizeCardPositions();
+        lensImage = HUD.tempAsset[HUD.LENS];
     }
         
     // DA RIMUOVERE E CREARE UN FILE APPOSITO CON QUESTA FUNZIONE CHE PUÒ SERVIRE UN
@@ -80,8 +83,9 @@ public class ExtraDeck {
 
     private void renderOptions(Graphics g) {
         if (isSelected) {
-            g.setColor(Color.red);
-            g.fillRect(x + CardObject.cardWidth/2 - 15, y - 50, 30, 30);
+            g.drawImage(lensImage, x + CardObject.cardWidth/2 - 15, y - 50, null);
+            // g.setColor(Color.red);
+            // g.fillRect(x + CardObject.cardWidth/2 - 15, y - 50, 30, 30);
         }
     }
     

@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import src.game.card.CardObject;
+import src.game.card.Monster;
+
 import javax.imageio.ImageIO;
 
 public class Table {
@@ -20,7 +22,7 @@ public class Table {
     private int cardHeight = (int) (((float) cardWidth)/whratio); 
     private float alpha = 0.5f;
     private int spaceBetweenCards = 10;
-    private int tableWidth = 6*spaceBetweenCards + 5*cardWidth;
+    private int tableWidth = 6*spaceBetweenCards + 4*cardHeight + cardWidth;
     private int tableHeight = 3*spaceBetweenCards + 2 * (int) ( ((float) cardWidth)/whratio);
 
     private int[][][] opponentFieldCardPositions = new int[2][5][2];
@@ -38,6 +40,8 @@ public class Table {
     private BufferedImage graveyard;
 
     public Table() { 
+        System.out.println("table width: " + tableWidth);
+        System.out.println("phase width: " + tableWidth / 6);
         try {
             wallpaper = ImageIO.read(new File("src/img/wallpaper.jpg"));
             cardBack = ImageIO.read(new File("src/img/cardBack.png"));
@@ -59,11 +63,13 @@ public class Table {
         }
 
         for (int i=0; i<2; i++) {
-            for (int j=0; j<5; j++) {
-                opponentFieldCardPositions[i][j][0] = centerTableX() + 5*spaceBetweenCards + 4*cardWidth - (j*spaceBetweenCards + j*cardWidth);
+            playerFieldCardPositions[i][0][0] = centerTableX() + spaceBetweenCards; 
+            playerFieldCardPositions[i][0][1] = centerPlayerTableY() + 2*spaceBetweenCards + cardHeight - i*(spaceBetweenCards + cardHeight);
+            for (int j=1; j<5; j++) {
+                opponentFieldCardPositions[i][j][0] = centerTableX() + 5*spaceBetweenCards + 4*90 - (j*spaceBetweenCards + j*90);
                 opponentFieldCardPositions[i][j][1] = centerOpponentTableY() + (i+1)*spaceBetweenCards + i*cardHeight;
-                playerFieldCardPositions[i][j][0] = centerTableX() + (j+1)*spaceBetweenCards + j*cardWidth;
-                playerFieldCardPositions[i][j][1] = centerPlayerTableY() + 2*spaceBetweenCards + cardHeight - i*(spaceBetweenCards + cardHeight);
+                playerFieldCardPositions[i][j][0] = playerFieldCardPositions[i][j-1][0] + spaceBetweenCards + cardHeight;  
+                playerFieldCardPositions[i][j][1] = playerFieldCardPositions[i][0][1];
             }
         }
     }
@@ -73,7 +79,7 @@ public class Table {
         renderPlayerTable(g);
         //renderOpponentTable(g);
     }
-
+ 
     //DA RIMUOVERE E CREARE UN FILE APPOSITO CON QUESTA FUNZIONE CHE PUÒ SERVIRE UN PO IN GIRO!
     BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
         Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
@@ -135,8 +141,20 @@ public class Table {
         return cardHeight;
     }
 
-    public void summonMonster(CardObject card) {
+    public void summonMonster(Monster card) {
         boolean[] isFree = new boolean[] {true, true, true};
+        int diffX;
+        int diffY;
+
+        if (card.getIsDefensePosition()) {
+            diffX = 15;
+            diffY = 10;
+        }
+        else {
+
+            diffX = 0;
+            diffY = 0;
+        }
 
         for (int i=0; i<playerMonsterOnField.size(); i++) {
             if (playerMonsterOnField.get(i).getX() == playerFieldCardPositions[1][1][0] && playerMonsterOnField.get(i).getY() == playerFieldCardPositions[1][1][1]) {
@@ -148,16 +166,16 @@ public class Table {
             }
         }
         if (isFree[0]) {
-            card.setX(playerFieldCardPositions[1][1][0]);
-            card.setY(playerFieldCardPositions[1][1][1]);
+            card.setX(playerFieldCardPositions[1][1][0] - diffX);
+            card.setY(playerFieldCardPositions[1][1][1] + diffY);
             playerMonsterOnField.add(card);
         } else if (isFree[1]) {
-            card.setX(playerFieldCardPositions[1][2][0]);
-            card.setY(playerFieldCardPositions[1][2][1]);
+            card.setX(playerFieldCardPositions[1][2][0] - diffX);
+            card.setY(playerFieldCardPositions[1][2][1] + diffY);
             playerMonsterOnField.add(card);
         } else if (isFree[2]) {
-            card.setX(playerFieldCardPositions[1][3][0]);
-            card.setY(playerFieldCardPositions[1][3][1]);
+            card.setX(playerFieldCardPositions[1][3][0] - diffX);
+            card.setY(playerFieldCardPositions[1][3][1] + diffY);
             playerMonsterOnField.add(card);
         }
     }

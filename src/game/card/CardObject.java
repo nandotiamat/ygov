@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Graphics;
 import java.io.File;
 import java.io.IOException;
+import java.awt.Rectangle;
 
 import javax.imageio.ImageIO;
 
@@ -125,6 +126,10 @@ public abstract class CardObject {
 
     public void setIsSelected(boolean bool) {
         isSelected = bool;
+    }
+
+    public Rectangle getRectangle() {
+        return new Rectangle(x, y, cardWidth, cardHeight);
     }
 
     public int getX() {

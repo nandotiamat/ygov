@@ -81,19 +81,16 @@ public class MouseMatch extends MouseAdapter {
                     ArrayList<CardObject> monsterOnPlayerField = table.getPlayerMonsterOnField();
                     System.out.println(table.getPlayerMonsterOnField().size() + " mostri sul terreno");
                     for (int i = 0; i < monsterOnPlayerField.size(); i++) {
-                        CardObject card = monsterOnPlayerField.get(i);
-                        if (inRectangle(e, card.getX(), card.getY(), CardObject.cardWidth, CardObject.cardHeight)) {
+                        Monster card = (Monster) monsterOnPlayerField.get(i);
+                        if (inRectangle(e, card.getRectangle())) {
                             if (hud.getCard() != card || hud.getCard() == null)  {
                                 if (hud.getCard() != null) {
                                     hud.getCard().setIsSelected(false);
                                 }
                                 hud.setCard(card);
                                 card.setIsSelected(true);
-                                flag = true;
                             }
-                        } else if (hud.getCard() != null && !flag){
-                            hud.getCard().setIsSelected(false);
-                            hud.setCard(null);
+                            flag = true;
                         }
                     }
                 }
@@ -104,18 +101,15 @@ public class MouseMatch extends MouseAdapter {
                     System.out.println(spellTrapOnPlayerField.size() + " carte magie/trappola sul terreno");
                     for (int i = 0; i < spellTrapOnPlayerField.size(); i++) {
                         CardObject card = spellTrapOnPlayerField.get(i);
-                        if (inRectangle(e, card.getX(), card.getY(), CardObject.cardWidth, CardObject.cardHeight)) {
+                        if (inRectangle(e, card.getRectangle())) {
+                            flag = true;
                             if (hud.getCard() != card || hud.getCard() == null)  {
                                 if (hud.getCard() != null) {
                                     hud.getCard().setIsSelected(false);
                                 }
                                 hud.setCard(card);
                                 card.setIsSelected(true);
-                                flag = true;
                             }
-                        } else if (hud.getCard() != null && !flag){
-                            hud.getCard().setIsSelected(false);
-                            hud.setCard(null);
                         }
                     }
                 }
@@ -152,8 +146,8 @@ public class MouseMatch extends MouseAdapter {
                                 hud.getCard().setIsSelected(false);
                             hud.setCard(selectedCard);
                             selectedCard.setIsSelected(true);
-                            flag = true;
                         } 
+                        flag = true;
 
                     }
                 }
@@ -178,8 +172,8 @@ public class MouseMatch extends MouseAdapter {
                                 hud.getCard().setIsSelected(false);
                             hud.setCard(selectedCard);
                             selectedCard.setIsSelected(true);
-                            flag = true;
                         } 
+                        flag = true;
                     }
                 }
             }
@@ -189,21 +183,17 @@ public class MouseMatch extends MouseAdapter {
                 if (hud.getCard() instanceof Spell) {
                     Spell card = (Spell) hud.getCard();
                     if (card.getIsSettable()) {
-                        if (e.getX() > card.getX() + CardObject.cardWidth/2 - 15 && e.getX() < card.getX() + CardObject.cardWidth/2 + 15){
-                            if (e.getY() > card.getY() - 50 && e.getY() <  card.getY() - 20) {
-                                card.set(player.getHand(), table);
-                            }
-                        } 
+                        if (inRectangle(e, card.getSetButtonRect())) {
+                            card.set(player.getHand(), table);
+                        }
                     }
                 }
                 else if (hud.getCard() instanceof Trap) {
                     Trap card = (Trap) hud.getCard();
                     if (card.getIsSettable()) {
-                        if (e.getX() > card.getX() + CardObject.cardWidth/2 - 15 && e.getX() < card.getX() + CardObject.cardWidth/2 + 15){
-                            if (e.getY() > card.getY() - 50 && e.getY() <  card.getY() - 20) {
-                                card.set(player.getHand(), table);
-                            }
-                        } 
+                        if (inRectangle(e, card.getSetButtonRect())) {
+                            card.set(player.getHand(), table);
+                        }
                     }
                 }
                 else if (hud.getCard() instanceof Monster) {
@@ -213,19 +203,16 @@ public class MouseMatch extends MouseAdapter {
                             card.normalSummon(player.getHand(), table);
                             player.setCanNormalSummon(false);
                         }
-                        // if (e.getX() > card.getX() + CardObject.cardWidth/2 - 15 && e.getX() < card.getX() + CardObject.cardWidth/2 + 15){
-                        //     if (e.getY() > card.getY() - 50 && e.getY() <  card.getY() - 20) {
-                        //         if (player.getCanNormalSummon()) {
-                        //             card.normalSummon(player.getHand(), table);
-                        //             player.setCanNormalSummon(false);
-                        //         }
-                        //     }
-                        // } 
                     }
                     if (card.getIsSettable() && player.getCanNormalSummon()) {
                         if (inRectangle(e, card.getSetButtonRect())) {
                             card.set();
                             player.setCanNormalSummon(false);
+                        }
+                    }
+                    if (card.getCanChangePosition()) {
+                        if (inRectangle(e, card.getChangePositionRect())) {
+                            card.changePosition();
                         }
                     }
                 }
@@ -234,6 +221,7 @@ public class MouseMatch extends MouseAdapter {
             // testing in rectangle
             int i = inHand(e.getX(), e.getY(), player.getHand().getPositions());
             if (i != -1) {
+                flag = true;
                 CardObject selectedCard = player.getHand().getHand().get(i);
                 if (hud.getCard() != selectedCard || hud.getCard() == null) {
                     if (hud.getCard() != null)
@@ -241,11 +229,13 @@ public class MouseMatch extends MouseAdapter {
                     hud.setCard(selectedCard);
                     selectedCard.setIsSelected(true);
                 } 
-            } else if (hud.getCard() != null && !flag) {
-                hud.getCard().setIsSelected(false);
-                hud.setCard(null);
             }
 
+            
+        if (hud.getCard() != null && !flag){
+            hud.getCard().setIsSelected(false);
+            hud.setCard(null);
+        }
         }
     }
 }
