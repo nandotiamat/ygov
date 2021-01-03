@@ -3,6 +3,7 @@ package src.game.card;
 import src.game.Hand;
 import src.game.Match;
 import src.game.Table;
+import src.game.player.Player;
 import src.game.HUD;
 
 import java.awt.image.BufferedImage;
@@ -11,11 +12,11 @@ import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.awt.Color;
 
 public abstract class Monster extends CardObject{
 
     protected int level;
+    protected int numberOfTributes;
     protected int atk;
     protected int def;
     protected String type;
@@ -45,6 +46,15 @@ public abstract class Monster extends CardObject{
         }
         isDefensePosition = false;
         canChangePosition = false;
+
+        if (level < 5) { 
+            numberOfTributes = 0;
+        } else if (level > 4 && level < 7) {
+            numberOfTributes = 1;
+        } else if (level > 6 && level < 9) {
+            numberOfTributes = 2;
+        }
+
         rotatedImage = rotateImageByDegrees(handImage, 90);
     }
     public static BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
@@ -93,12 +103,19 @@ public abstract class Monster extends CardObject{
         renderOptions(g);
     }
 
-    public void normalSummon(Hand hand, Table table) {
-        hand.getHand().remove(this); 
-        hand.organizePositions();
-        isNormalSummonable = false;
-        isSettable = false;
-        table.summonMonster(this);
+    public void normalSummon(Player player, Hand hand, Table table) {
+        if (level <= 4) {
+            hand.getHand().remove(this); 
+            hand.organizePositions();
+            isNormalSummonable = false;
+            isSettable = false;
+            table.summonMonster(this);
+        } else if ((level == 5 || level == 6) && table.getPlayerMonsterOnField().size() > 0) {
+            player.setIsTributing(true);
+            player.setMonsterToSummonByTribute(this);
+            System.out.println("Scegli 1 mostro da offrire come tributo.");
+        }
+
     }    
 
     public void changePosition() {
@@ -138,6 +155,8 @@ public abstract class Monster extends CardObject{
         // }
         if (this.isSelected) {      
             if (this.isNormalSummonable && match.getTable().getPlayerMonsterOnField().size() < 3 && match.getPlayer().getCanNormalSummon()) {
+                g.drawImage(HUD.tempAsset[match.getHUD().NORMALSUMMON], x, y - 40, null);
+            } else if ((level == 5 || level == 6) && match.getTable().getPlayerMonsterOnField().size() > 0 && match.getTable().getPlayerMonsterOnField().size() < 3 && match.getPlayer().getCanNormalSummon()) {
                 g.drawImage(HUD.tempAsset[match.getHUD().NORMALSUMMON], x, y - 40, null);
             }
             if (this.isSettable && match.getTable().getPlayerMonsterOnField().size() < 3 && match.getPlayer().getCanNormalSummon()) {
@@ -222,5 +241,9 @@ public abstract class Monster extends CardObject{
 
     public void setCanChangePosition(boolean bool) {
         canChangePosition = bool;
+    }
+
+    public int getNumberOfTributes() {
+        return numberOfTributes;
     }
 }

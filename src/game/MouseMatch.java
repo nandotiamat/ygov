@@ -93,6 +93,20 @@ public class MouseMatch extends MouseAdapter {
                                 card.setIsSelected(true);
                             }
                             flag = true;
+
+                            if (player.getIsTributing()) {
+                                if (player.getTributes() == null) {
+                                    player.addToTribute(card);
+                                } else {
+                                    if (player.getTributes().contains(card)) {
+                                        player.getTributes().remove(card);
+                                    } else {
+                                        player.addToTribute(card);
+                                        System.out.println("Hai selezionato un mostro da offrire come tributo");
+                                        table.tributeMonster(player.getMonsterToSummonByTribute(), player);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -200,9 +214,9 @@ public class MouseMatch extends MouseAdapter {
                 }
                 else if (hud.getCard() instanceof Monster) {
                     Monster card = (Monster) hud.getCard();
-                    if (card.getIsNormalSummonable() && player.getCanNormalSummon()){
+                    if ((card.getIsNormalSummonable() && player.getCanNormalSummon()) || (table.getPlayerMonsterOnField().size() > 0 && (card.getLevel() == 5 || card.getLevel() == 6))){
                         if (inRectangle(e, card.getNormalSummonButtonRect())) {
-                            card.normalSummon(player.getHand(), table);
+                            card.normalSummon(player, player.getHand(), table);
                             player.setCanNormalSummon(false);
                         }
                     }
@@ -243,6 +257,24 @@ public class MouseMatch extends MouseAdapter {
                 System.out.println(	"STAI PREMENDO SULLE FASIU");
                 if (inRectangle(e, table.getPhasesRect()[5])) {
                     match.setPhase(PHASES.EndPhase);
+
+                    // Thread t = new Thread(new Runnable() {
+                    //     @Override
+                    //     public void run() {
+                    //             try {
+                    //             SwingUtilities.invokeAndWait(new Runnable() {
+                    //                 public void run() {
+                    //                     match.setPhase(PHASES.EndPhase);
+                    //                 }
+                    //             });       
+                    //         } catch (InvocationTargetException err) {
+                    //             System.out.println("invocation");
+                    //         } catch (InterruptedException err) {
+                    //             System.out.println("invocation");
+                    //         }
+                    //     }
+                    // });
+                    // t.start();
                 }
             }
         }

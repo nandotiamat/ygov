@@ -78,8 +78,8 @@ public abstract class CardObject {
     }
 
 
-    public abstract void destroy(); 
     public abstract void renderOptions(Graphics g);
+    public abstract void destroy();
 
     public void render(Graphics g, int size) {
         if (size == HANDSIZE) {

@@ -35,6 +35,10 @@ public class Player {
 
     private int lifePoints;
     private boolean canNormalSummon;
+    private boolean isTributing;
+
+    private ArrayList<Monster> tributes;
+    private Monster monsterToSummonByTribute;
 
     public Player(Deck deck, Hand hand, Graveyard graveyard, ExtraDeck extraDeck, Table table) {
         this.deck = deck;
@@ -44,6 +48,9 @@ public class Player {
         this.table = table;
         lifePoints = 4000;
         canNormalSummon = true;
+        isTributing = false;
+        tributes = new ArrayList<Monster>();
+        monsterToSummonByTribute = null;
     }    
 
     public Player(Match match) {
@@ -76,6 +83,9 @@ public class Player {
         table = match.getTable();
         lifePoints = 4000;
         canNormalSummon = true;
+        isTributing = false;
+        tributes = new ArrayList<Monster>();
+        monsterToSummonByTribute = null;
     }
 
     public void render(Graphics g) {
@@ -109,6 +119,10 @@ public class Player {
         }
     }
 
+    public void addToTribute(Monster card) {
+        tributes.add(card);
+    }
+
     public ArrayList<CardObject> getDeck() {
         return deck.getDeck();
     }
@@ -129,6 +143,18 @@ public class Player {
     public void setCanNormalSummon(boolean bool) {
         canNormalSummon = bool;
     }
+
+    public boolean getIsTributing() {
+        return isTributing;
+    }
+
+    public ArrayList<Monster> getTributes() {
+        return tributes;
+    }
+
+    public void setIsTributing(boolean bool) {
+        isTributing = bool;
+    }
     
     public Graveyard getGraveyard() {
         return graveyard;
@@ -140,6 +166,14 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public Monster getMonsterToSummonByTribute() {
+        return monsterToSummonByTribute;
+    }
+
+    public void setMonsterToSummonByTribute(Monster monster) {
+        monsterToSummonByTribute = monster;
     }
 
     public void decreaseLifePoints(int decrease) {

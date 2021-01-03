@@ -56,11 +56,11 @@ public class Match {
     
     public void setPhase(PHASES phase) {
         this.phase = phase;
-        long beginning = System.currentTimeMillis();
-        long now;
-        do {
-            now = System.currentTimeMillis();
-        }while (now - beginning < 1000); 
+        // long beginning = System.currentTimeMillis();
+        // long now;
+        // do {
+        //     now = System.currentTimeMillis();
+        // }while (now - beginning < 1000); 
 
         if (this.phase == PHASES.EndPhase ) {
             System.out.println("New turn!");

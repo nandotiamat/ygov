@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import src.game.card.CardObject;
 import src.game.card.Monster;
+import src.game.player.Player;
 
 import javax.imageio.ImageIO;
 
@@ -184,7 +185,6 @@ public class Table {
             diffY = 10;
         }
         else {
-
             diffX = 0;
             diffY = 0;
         }
@@ -192,7 +192,11 @@ public class Table {
         for (int i=0; i<playerMonsterOnField.size(); i++) {
             Monster monster = (Monster) playerMonsterOnField.get(i);
             if (monster.getIsDefensePosition()) {
-                if (monster.getX() == playerFieldCardPositions[1][1][0] - diffX && monster.getY() == playerFieldCardPositions[1][1][1] + diffY) {
+                System.out.println("DEFENSE");
+                System.out.println("MONSTER X : " + monster.getX() + " Y : " + monster.getY());
+                System.out.println("TABLE X : " + ( playerFieldCardPositions[1][1][0] - diffX ) + " Y : " + ( playerFieldCardPositions[1][1][1] + diffY));
+                if (monster.getX() == ( playerFieldCardPositions[1][1][0] - diffX )&& monster.getY() == ( playerFieldCardPositions[1][1][1] + diffY )) {
+                    System.out.println("first poos not free");
                     isFree[0] = false;
                 } else if (monster.getX() == playerFieldCardPositions[1][2][0] - diffX && monster.getY() == playerFieldCardPositions[1][2][1] + diffY ) {
                     isFree[1] = false;
@@ -200,6 +204,7 @@ public class Table {
                     isFree[2] = false;
                 }
             } else {
+                System.out.println("atkj");
                 if (monster.getX() == playerFieldCardPositions[1][1][0] && monster.getY() == playerFieldCardPositions[1][1][1]) {
                     isFree[0] = false;
                 } else if (monster.getX() == playerFieldCardPositions[1][2][0] && monster.getY() == playerFieldCardPositions[1][2][1]) {
@@ -221,6 +226,26 @@ public class Table {
             card.setX(playerFieldCardPositions[1][3][0] - diffX);
             card.setY(playerFieldCardPositions[1][3][1] + diffY);
             playerMonsterOnField.add(card);
+        }
+    }
+
+    public void tributeMonster(Monster monster, Player player) {
+        if (monster.getNumberOfTributes() < player.getTributes().size()) {
+            System.out.println("Need " + (player.getTributes().size() - monster.getNumberOfTributes()) + " tributes");
+        } else {
+            for (int i = 0; i < player.getTributes().size(); i++) {
+                CardObject card = player.getTributes().remove(0);
+                playerMonsterOnField.remove(card);
+                player.getGraveyard().add(card);             
+            }
+            Hand hand = player.getHand();
+            hand.getHand().remove(monster); 
+            hand.organizePositions();
+            monster.setIsNormalSummonable(false);
+            monster.setIsSettable(false);
+            summonMonster(monster);
+            player.setIsTributing(false);
+            player.setMonsterToSummonByTribute(null);
         }
     }
 
